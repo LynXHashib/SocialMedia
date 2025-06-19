@@ -1,0 +1,7 @@
+Social Media Backend API
+
+Users can sign up, login, create posts, like/unlike, follow/unfollow users.
+
+Comments on posts, notifications, and basic user profile settings.
+
+Use JWT or sessions for authentication.
