@@ -3,16 +3,16 @@ const express = require('express');
 const { default: mongoose } = require('mongoose');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
-
+const dotenv = require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(
   session({
-    secret: 'CCS',
+    secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
     store: MongoStore.create({
-      mongoUrl: 'mongodb://127.0.0.1:27017/socialMedia',
+      mongoUrl: process.env.MONGO_URI,
       touchAfter: 24 * 3600,
     }),
   })
@@ -20,7 +20,7 @@ app.use(
 
 const mongoDB = async () => {
   try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/socialMedia');
+    await mongoose.connect(process.env.MONGO_URI);
     console.log(`Connected Successfully`);
   } catch (err) {
     console.log(err);
