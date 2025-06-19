@@ -7,7 +7,7 @@ const session = require('express-session');
 const app = express();
 app.use(express.json());
 app.use(
-  express.session({
+  session({
     secret: 'CCS',
     saveUninitialized: false,
     resave: false,
