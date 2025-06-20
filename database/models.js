@@ -19,9 +19,14 @@ const postSchema = new mongoose.Schema({
   dislikedby: {
     type: [ObjectId],
   },
-  createdBy: {
+  createdby: {
     type: ObjectId,
+    ref: 'users',
     required: true,
+  },
+  date: {
+    type: String,
+    default: new Date(),
   },
 });
 const userSchema = new mongoose.Schema({
@@ -59,5 +64,20 @@ const userSchema = new mongoose.Schema({
     default: 5,
   },
 });
-
-module.exports = { postSchema, userSchema };
+const commentSchema = new mongoose.Schema({
+  comment: {
+    type: String,
+    required: true,
+  },
+  commentby: {
+    type: ObjectId,
+    required: true,
+    ref: 'users',
+  },
+  commenton: {
+    type: ObjectId,
+    required: true,
+    ref: 'posts',
+  },
+});
+module.exports = { postSchema, userSchema, commentSchema };

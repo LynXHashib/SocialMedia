@@ -1,24 +1,32 @@
 const { default: mongoose } = require('mongoose');
-const { postSchema } = require('../database/models');
+const { postSchema, commentSchema } = require('../database/models');
 const { logging } = require('../modules/app');
 const { default: axios } = require('axios');
 
 const posts = mongoose.model('posts', postSchema);
-
+const comments = mongoose.model('comments', commentSchema);
 const createPost = async (req, res) => {
   try {
+    if (req.method == 'GET') {
+      return res.status(200).json({
+        message:
+          'Required input : title and description, must be logged in. Optional: image',
+      });
+    }
     const { title, description, image } = req.body;
     if (!title || !description) {
       return res.status(400).json({
         message: 'No title or description',
       });
     }
-    try {
-      const imageValidation = await axios.get(image);
-    } catch (err) {
-      return res.status(400).json({
-        message: 'Image does not exists',
-      });
+    if (image) {
+      try {
+        await axios.get(image);
+      } catch (err) {
+        return res.status(400).json({
+          message: 'Image does not exist or is unreachable.',
+        });
+      }
     }
 
     const createdby = req.session.user._id;
@@ -53,23 +61,153 @@ const deletePost = async (req, res) => {
     post = await posts.findOneAndDelete({ _id: postID });
   } catch (err) {
     logging(err);
+    return res.status(500).json({
+      message: 'Internal Server Error',
+    });
   }
 };
 const likePost = async (req, res) => {
   try {
     const postID = req.query.id;
     let post = await posts.findById(postID);
-    post.likedby.push(req.session.user._id);
+    if (!post) return res.status(400).json({ message: 'Post dont exist' });
+    let i = post.likedby.indexOf(req.session.user._id);
+    if (i == -1) {
+      post.likedby.push(req.session.user._id);
+    } else {
+      post.likedby.splice(i, 1);
+    }
+    i = post.dislikedby.indexOf(req.session.user._id);
+    if (i != -1) {
+      post.dislikedby.splice(i, 1);
+    }
+    await post.save();
+    return res.status(201).json({
+      message: 'Liked successfully',
+      Like: post.likedby.length,
+    });
   } catch (err) {
     logging(err);
+    return res.status(500).json({
+      message: 'Internal Server Error',
+    });
   }
 };
 const dislikePost = async (req, res) => {
   try {
     const postID = req.query.id;
     let post = await posts.findById(postID);
-    post.dislikedby.push(req.session.user._id);
+    if (!post) return res.status(400).json({ message: 'Post dont exist' });
+
+    let i = post.dislikedby.indexOf(req.session.user._id);
+    if (i == -1) {
+      post.dislikedby.push(req.session.user._id);
+    } else {
+      post.dislikedby.splice(i, 1);
+    }
+    i = post.likedby.indexOf(req.session.user._id);
+    if (i != -1) {
+      post.likedby.splice(i, 1);
+    }
+    await post.save();
+    return res.status(201).json({
+      message: 'Liked successfully',
+      Dislike: post.dislikedby.length,
+    });
   } catch (err) {
     logging(err);
+    return res.status(500).json({
+      message: 'Internal Server Error',
+    });
   }
+};
+const home = async (req, res) => {
+  try {
+    const allPosts = await posts.find().populate('createdby', 'name');
+    const postData = allPosts.map((el) => ({
+      author: el.createdby.name,
+      date: el.date,
+      title: el.title,
+      description: el.description,
+      image: el.image,
+    }));
+    return res.status(200).json(postData);
+  } catch (err) {
+    logging(err);
+    return res.status(500).json({
+      message: 'Internal Server Error',
+    });
+  }
+};
+const singlePost = async (req, res) => {
+  try {
+    const postID = req.query.id;
+    const post = await posts.findById(postID).populate('createdby');
+    const commentData = await comments
+      .find({ commenton: postID })
+      .populate('commentby', 'name');
+    if (!post) {
+      return res.status(404).json({
+        message: 'Post dont exist',
+      });
+    }
+    const postComments = commentData.map((el) => ({
+      name: el.commentby.name,
+      comment: el.comment,
+    }));
+    return res.status(200).json({
+      image: post.image,
+      title: post.title,
+      description: post.description,
+      likes: post.likedby.length,
+      dislikes: post.dislikedby.length,
+      author: post.createdby.name,
+      date: post.date,
+      postComments,
+    });
+  } catch (err) {
+    logging(err);
+    return res.status(500).json({
+      message: 'Internal server error',
+    });
+  }
+};
+const comment = async (req, res) => {
+  try {
+    if (req.method == 'GET') {
+      return res.status(200).json({
+        comment: 'body',
+        commenton: 'query',
+      });
+    }
+    const { comment } = req.body;
+    const commentby = req.session.user._id;
+    const commenton = req.query.id;
+    const postStatus = await posts.findById(commenton);
+    if (!postStatus)
+      return res.json({
+        message: 'Post dont exist',
+      });
+    const createComment = await comments.create({
+      comment: comment,
+      commentby: commentby,
+      commenton: commenton,
+    });
+    return res.status(201).json({
+      message: 'Comment created successfully',
+      createComment,
+    });
+  } catch (err) {
+    logging(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+module.exports = {
+  createPost,
+  deletePost,
+  likePost,
+  dislikePost,
+  home,
+  singlePost,
+  comment,
 };

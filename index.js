@@ -4,17 +4,25 @@ const { default: mongoose } = require('mongoose');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const dotenv = require('dotenv').config();
+const cors = require('cors');
 const app = express();
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 app.use(express.json());
 app.use(
   session({
     secret: process.env.SECRET,
-    saveUninitialized: false,
     resave: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      touchAfter: 24 * 3600,
-    }),
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
   })
 );
 
@@ -31,10 +39,8 @@ mongoDB();
 // ROUTES
 
 const apiRoute = require('./routes/apiRoutes');
+const home = require('./controllers/home');
 
 //
-app.get('/', async (req, res) => {
-  res.json({ message: "It's working perfectly fine" });
-});
-app.use('/api/user', apiRoute);
+app.use('/api/', apiRoute);
 module.exports = app;
