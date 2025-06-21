@@ -1,7 +1,82 @@
 const { default: mongoose } = require('mongoose');
 const { userSchema } = require('../database/models');
-const { logging } = require('../modules/app');
+const { logging, transporter } = require('../modules/app');
+const session = require('express-session');
+
+//   CONSTANTS
+
+const sendMail = async (email, uniqueToken) => {
+  await transporter.sendMail({
+    from: '"Email Verification"<smedianode@gmail.com>',
+    to: email,
+    subject: 'Verify your email',
+    html: `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Email Verification</title>
+    <style>
+      .container {
+        max-width: 400px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        padding: 32px 24px;
+        font-family: Arial, sans-serif;
+        color: #222;
+      }
+      .title {
+        color: #2d7ff9;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .message {
+        font-size: 16px;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+      .verify-btn {
+        display: block;
+        width: 100%;
+        background: #2d7ff9;
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 0;
+        border-radius: 4px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .footer {
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+        margin-top: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="title">Verify Your Email</h2>
+      <div class="message">
+        Thank you for registering! Please click the button below to verify your email address.
+      </div>
+      <a href="http://localhost:5000/auth/verify?email=${email}&token=${uniqueToken}" class="verify-btn">
+        Verify Email
+      </a>
+      <div class="footer">
+        If you did not create an account, you can ignore this email.
+      </div>
+    </div>
+  </body>
+</html>`,
+  });
+};
+
 const users = mongoose.model('users', userSchema);
+
+// AUTHENTICATION
 
 const register = async (req, res) => {
   try {
@@ -28,25 +103,51 @@ const register = async (req, res) => {
           message: 'Username Already Taken',
         });
       }
+      const uniqueToken =
+        Math.floor(Math.random() * 10) +
+        Math.floor(Math.random() * 100) +
+        Math.floor(Math.random() * 1000);
+      sendMail(email, uniqueToken);
       const newUser = await users.create({
         name: name,
         email: email,
         password: password,
         gender: gender,
+        verifytoken: uniqueToken,
       });
       console.log(newUser);
       req.session.user = newUser;
       return res.status(201).json({
-        message: `User:${name} created successfully`,
+        message: `User:${name} created successfully. You can't access feed until you verify your email`,
         name: name,
         email: email,
       });
     }
   } catch (err) {
     logging(err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-
+const verification = async (req, res) => {
+  try {
+    const email = req.query.email;
+    const token = req.query.token;
+    const user = await users.findOne({ email: email });
+    if (user.verifytoken == token) {
+      user.verified = true;
+      user.verifytoken = null;
+      await user.save();
+      return res.json({ message: 'Account Verified' });
+    } else {
+      return res.json({
+        message: 'Verification Failed. Try again from the beginning',
+      });
+    }
+  } catch (err) {
+    logging(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 const login = async (req, res) => {
   try {
     if (req.method == 'GET') {
@@ -66,22 +167,114 @@ const login = async (req, res) => {
         message: 'Wrong Username/Email or Password',
       });
     }
+    if (!user.verified) {
+      user.verifytoken =
+        Math.floor(Math.random() * 10) +
+        Math.floor(Math.random() * 100) +
+        Math.floor(Math.random() * 1000);
+      await user.save();
+      sendMail(user.email, user.verifytoken);
+      return res.json({
+        message: 'A verfication code has been sent',
+      });
+    }
     req.session.user = user;
     return res.status(202).json({
       message: 'Login Successful',
     });
   } catch (err) {
     logging(err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 const logout = async (req, res) => {
   try {
     req.session.destroy(() => {
       res.clearCookie('connect.sid');
-      res.redirect('/?msg=Logout+Successful');
+      return res.redirect('/?msg=Logout+Successful');
     });
   } catch (err) {
     logging(err);
   }
 };
-module.exports = { register, login, logout };
+
+// USER
+const changeName = async (req, res) => {
+  try {
+    const name = req.body;
+    const user = await user.findById(req.session.user._id);
+    user.name = name;
+    await user.save();
+    return res.json({
+      message: 'Name Changed',
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const changeBio = async (req, res) => {
+  try {
+    const bio = req.body;
+    const user = await user.findById(req.session.user._id);
+    user.bio = bio;
+    await user.save();
+    return res.json({
+      message: 'Bio Changed',
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const deleteAccount = async (req, res) => {
+  try {
+    const user = await user.findByIdAndDelete(req.session.user._id);
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      return res.redirect('/?msg=Delete+Successful');
+    });
+    return res.json({
+      message: 'Name Changed',
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const followUser = async (req, res) => {
+  try {
+    const userID = req.query.id;
+    const user = users.findById(userID);
+    if (!user)
+      return res.status(400).json({
+        message: 'Invald Request',
+      });
+    let i = user.followers.indexOf(userID);
+    if (i == -1) {
+      user.followers.push(req.session.user._id);
+      await user.save();
+      return res.json({
+        message: 'Followed',
+      });
+    } else {
+      user.followers.splice(i, 1);
+      await user.save();
+      return res.json({
+        message: 'Unfollowed',
+      });
+    }
+  } catch (err) {
+    logging(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  logout,
+  followUser,
+  changeBio,
+  changeBio,
+  deleteAccount,
+  verification,
+};

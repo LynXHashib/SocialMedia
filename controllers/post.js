@@ -1,8 +1,8 @@
 const { default: mongoose } = require('mongoose');
-const { postSchema, commentSchema } = require('../database/models');
+const { postSchema, commentSchema, userSchema } = require('../database/models');
 const { logging } = require('../modules/app');
 const { default: axios } = require('axios');
-
+const users = mongoose.model('users', userSchema);
 const posts = mongoose.model('posts', postSchema);
 const comments = mongoose.model('comments', commentSchema);
 const createPost = async (req, res) => {
@@ -36,9 +36,12 @@ const createPost = async (req, res) => {
       image: image,
       createdby: createdby,
     });
-    console.log(newPost);
+    const user = await users.findById(req.session.user._id);
+    user.postcount += 1;
+
     return res.status(201).json({
       message: 'New Post created successfully',
+      newPost,
     });
   } catch (err) {
     logging(err);
@@ -121,6 +124,9 @@ const dislikePost = async (req, res) => {
     });
   }
 };
+
+//
+
 const home = async (req, res) => {
   try {
     const allPosts = await posts.find().populate('createdby', 'name');

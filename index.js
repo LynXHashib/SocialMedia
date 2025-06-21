@@ -4,6 +4,7 @@ const { default: mongoose } = require('mongoose');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const dotenv = require('dotenv').config();
+const nodemailer = require('nodemailer');
 const cors = require('cors');
 const app = express();
 app.use(
@@ -39,8 +40,10 @@ mongoDB();
 // ROUTES
 
 const apiRoute = require('./routes/apiRoutes');
-const home = require('./controllers/home');
+const authRoute = require('./routes/authRoute');
+const { authCheck } = require('./middlewares/app');
 
 //
-app.use('/api/', apiRoute);
+app.use('/auth', authRoute);
+app.use('/api', authCheck, apiRoute);
 module.exports = app;

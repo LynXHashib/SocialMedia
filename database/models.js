@@ -52,12 +52,21 @@ const userSchema = new mongoose.Schema({
     enum: ['Male', 'Female'],
     required: true,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  verifytoken: {
+    type: String,
+    default: null,
+  },
   followers: {
     type: [ObjectId],
     default: [],
   },
-  postCount: {
+  postcount: {
     type: Number,
+    default: 0,
   },
   securityLevel: {
     type: Number,
