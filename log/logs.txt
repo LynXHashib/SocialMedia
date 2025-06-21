@@ -1,0 +1,44 @@
+2025-06-19T06:44:50.928Z MongoServerError: E11000 duplicate key error collection: socialMedia.users index: name_1 dup key: { name: "Hashibul Islam" }
+    at InsertOneOperation.execute (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/operations/insert.js:51:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async tryOperation (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/operations/execute_operation.js:207:20)
+    at async executeOperation (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/operations/execute_operation.js:75:16)
+    at async Collection.insertOne (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/collection.js:157:16)
+2025-06-20T08:00:41.440Z TypeError: Cannot read properties of undefined (reading 'name')
+    at home (/home/hashib/Code/ActualApps/SocialMedia/controllers/home.js:14:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-20T08:02:27.305Z TypeError: Cannot read properties of undefined (reading 'toString')
+    at home (/home/hashib/Code/ActualApps/SocialMedia/controllers/home.js:14:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-20T12:41:53.242Z TypeError: Cannot read properties of undefined (reading '_id')
+    at comment (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:184:40)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
+    at router.handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:186:3)
+
+2025-06-20T12:47:45.922Z ValidationError: comments validation failed: commenton: Path `commenton` is required.
+    at Document.invalidate (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/document.js:3352:32)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/document.js:3113:17
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+
+2025-06-20T12:50:27.509Z TypeError: Cannot read properties of undefined (reading 'id')
+    at singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:144:30)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
+    at router.handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:186:3)
+
