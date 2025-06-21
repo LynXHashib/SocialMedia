@@ -10,3 +10,5 @@ const home = async (req, res) => {
     logging;
   }
 };
+
+module.exports = home;

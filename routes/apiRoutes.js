@@ -7,7 +7,7 @@ const {
   dislikePost,
   singlePost,
   comment,
-  home,
+  feed,
 } = require('../controllers/post');
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.route('/user/follow').get(followUser);
 
 //Post Routes
 router.route('/').get(singlePost);
-router.route('/home').get(home);
+router.route('/feed').get(feed);
 router.route('/comment').get(comment).post(comment);
 router.route('/post').get(createPost).post(createPost);
 router.route('/post/delete').get(deletePost).post(deletePost);

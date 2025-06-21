@@ -127,7 +127,7 @@ const dislikePost = async (req, res) => {
 
 //
 
-const home = async (req, res) => {
+const feed = async (req, res) => {
   try {
     const allPosts = await posts.find().populate('createdby', 'name');
     const postData = allPosts.map((el) => ({
@@ -213,7 +213,7 @@ module.exports = {
   deletePost,
   likePost,
   dislikePost,
-  home,
+  feed,
   singlePost,
   comment,
 };

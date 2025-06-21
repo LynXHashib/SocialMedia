@@ -42,8 +42,10 @@ mongoDB();
 const apiRoute = require('./routes/apiRoutes');
 const authRoute = require('./routes/authRoute');
 const { authCheck } = require('./middlewares/app');
+const home = require('./controllers/home');
 
 //
+app.use('/', home);
 app.use('/auth', authRoute);
 app.use('/api', authCheck, apiRoute);
 module.exports = app;
