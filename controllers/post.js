@@ -30,7 +30,7 @@ const createPost = async (req, res) => {
     }
 
     const createdby = req.session.user._id;
-    const newPost = posts.create({
+    const newPost = await posts.create({
       title: title,
       description: description,
       image: image,
@@ -38,7 +38,7 @@ const createPost = async (req, res) => {
     });
     const user = await users.findById(req.session.user._id);
     user.postcount += 1;
-
+    user.save();
     return res.status(201).json({
       message: 'New Post created successfully',
       newPost,
@@ -56,7 +56,7 @@ const deletePost = async (req, res) => {
         message: 'No such posts exist',
       });
     }
-    if (post.createdBy != req.session.user._id) {
+    if (post.createdby != req.session.user._id) {
       return res.status(400).json({
         message: 'You are not authorized to do this',
       });
@@ -129,7 +129,14 @@ const dislikePost = async (req, res) => {
 
 const feed = async (req, res) => {
   try {
-    const allPosts = await posts.find().populate('createdby', 'name');
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const allPosts = await posts
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate('createdby', 'name');
+
     const postData = allPosts.map((el) => ({
       author: el.createdby.name,
       date: el.date,
@@ -157,6 +164,7 @@ const singlePost = async (req, res) => {
         message: 'Post dont exist',
       });
     }
+
     const postComments = commentData.map((el) => ({
       name: el.commentby.name,
       comment: el.comment,
@@ -190,6 +198,10 @@ const comment = async (req, res) => {
     const commentby = req.session.user._id;
     const commenton = req.query.id;
     const postStatus = await posts.findById(commenton);
+    if (!comment || comment.trim().length < 1) {
+      return res.status(400).json({ message: 'Comment cannot be empty' });
+    }
+
     if (!postStatus)
       return res.json({
         message: 'Post dont exist',

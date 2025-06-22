@@ -1,8 +1,7 @@
 const { default: mongoose } = require('mongoose');
 const { userSchema } = require('../database/models');
 const { logging, transporter } = require('../modules/app');
-const session = require('express-session');
-
+const crypto = require('crypto');
 //   CONSTANTS
 
 const sendMail = async (email, uniqueToken) => {
@@ -103,10 +102,8 @@ const register = async (req, res) => {
           message: 'Username Already Taken',
         });
       }
-      const uniqueToken =
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 100) +
-        Math.floor(Math.random() * 1000);
+      const uniqueToken = crypto.createHash('sha1').update(data).digest('hex');
+
       sendMail(email, uniqueToken);
       const newUser = await users.create({
         name: name,
@@ -168,10 +165,7 @@ const login = async (req, res) => {
       });
     }
     if (!user.verified) {
-      user.verifytoken =
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 100) +
-        Math.floor(Math.random() * 1000);
+      user.verifytoken = crypto.createHash('sha1').update(data).digest('hex');
       await user.save();
       sendMail(user.email, user.verifytoken);
       return res.json({
@@ -179,7 +173,7 @@ const login = async (req, res) => {
       });
     }
     req.session.user = user;
-    return res.status(202).json({
+    return res.status(200).json({
       message: 'Login Successful',
     });
   } catch (err) {
@@ -243,7 +237,7 @@ const deleteAccount = async (req, res) => {
 const followUser = async (req, res) => {
   try {
     const userID = req.query.id;
-    const user = users.findById(userID);
+    const user = await users.findById(userID);
     if (!user)
       return res.status(400).json({
         message: 'Invald Request',
@@ -273,7 +267,6 @@ module.exports = {
   login,
   logout,
   followUser,
-  changeBio,
   changeBio,
   deleteAccount,
   verification,
