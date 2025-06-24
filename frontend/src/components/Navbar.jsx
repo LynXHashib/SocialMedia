@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/auth';
 import { toast } from 'react-toastify';
+import logo from '/logo.svg';
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -24,6 +25,11 @@ const Navbar = () => {
     <nav className='navbar'>
       <div className='navbar-container'>
         <Link to='/' className='navbar-brand'>
+          <img
+            src={logo}
+            alt='Logo'
+            style={{ height: '60px', width: '100px' }}
+          />
           <h1>SocialMedia</h1>
         </Link>
 
@@ -95,6 +101,9 @@ const Navbar = () => {
         .navbar-brand {
           text-decoration: none;
           color: #1e293b;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
         }
 
         .navbar-brand h1 {
@@ -148,6 +157,11 @@ const Navbar = () => {
 
           .navbar-brand h1 {
             font-size: 1.25rem;
+          }
+          
+          .navbar-brand img {
+            height: 32px !important;
+            width: 48px !important;
           }
         }
       `}</style>
