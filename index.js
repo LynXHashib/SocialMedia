@@ -9,7 +9,7 @@ const cors = require('cors');
 const app = express();
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    origin: ['http://localhost:5001', 'http://127.0.0.1:5001'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -45,7 +45,11 @@ const { authCheck } = require('./middlewares/app');
 const home = require('./controllers/home');
 
 //
-app.use('/', home);
+app.get('/', home);
+
 app.use('/auth', authRoute);
 app.use('/api', authCheck, apiRoute);
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: 'URL DO NOT EXIST' });
+});
 module.exports = app;

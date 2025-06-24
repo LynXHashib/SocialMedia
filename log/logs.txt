@@ -42,3 +42,63 @@
     at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
     at router.handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:186:3)
 
+2025-06-24T19:38:08.238Z TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+    at JSON.stringify (<anonymous>)
+    at stringify (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:1020:12)
+    at ServerResponse.json (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:243:14)
+    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:202:16)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+
+2025-06-24T19:39:15.729Z TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+    at JSON.stringify (<anonymous>)
+    at stringify (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:1020:12)
+    at ServerResponse.json (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:243:14)
+    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:203:16)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+
+2025-06-24T19:39:39.988Z TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+    at JSON.stringify (<anonymous>)
+    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:203:26)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
+
+2025-06-24T19:39:52.365Z SyntaxError: Unexpected token 'u', "users.find"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:203:26)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
+

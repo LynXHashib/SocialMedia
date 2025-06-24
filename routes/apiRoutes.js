@@ -1,5 +1,11 @@
 const express = require('express');
-const { register, login, logout, followUser } = require('../controllers/user');
+const {
+  register,
+  login,
+  logout,
+  followUser,
+  profile,
+} = require('../controllers/user');
 const {
   createPost,
   deletePost,
@@ -13,7 +19,7 @@ const router = express.Router();
 
 // Authentication routes
 //User Routes
-
+router.route('/profile').get(profile);
 router.route('/user/follow').get(followUser);
 
 //Post Routes

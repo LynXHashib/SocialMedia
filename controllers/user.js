@@ -147,20 +147,17 @@ const verification = async (req, res) => {
 };
 const login = async (req, res) => {
   try {
-    if (req.method == 'GET') {
-      return res
-        .status(200)
-        .json({ message: 'Send your Username/Email and Password' });
-    }
+    console.log(req.body);
     const { name, email, password } = req.body;
     if ((!name && !email) || !password) {
-      return res.json({ message: 'Wrong Input' });
+      return res.json({ success: false, message: 'Wrong Input' });
     }
     const user =
       (await users.findOne({ email: email, password: password })) ||
       (await users.findOne({ name: name, password: password }));
     if (!user) {
       return res.json({
+        success: false,
         message: 'Wrong Username/Email or Password',
       });
     }
@@ -172,8 +169,10 @@ const login = async (req, res) => {
         message: 'A verfication code has been sent',
       });
     }
+
     req.session.user = user;
     return res.status(200).json({
+      success: true,
       message: 'Login Successful',
     });
   } catch (err) {
@@ -186,7 +185,9 @@ const logout = async (req, res) => {
   try {
     req.session.destroy(() => {
       res.clearCookie('connect.sid');
-      return res.redirect('/?msg=Logout+Successful');
+      return res.json({
+        message: 'Logout Successful',
+      });
     });
   } catch (err) {
     logging(err);
@@ -194,6 +195,18 @@ const logout = async (req, res) => {
 };
 
 // USER
+const profile = async (req, res) => {
+  try {
+    const userID = req.session.user._id;
+    const userdb = await users.findById(userID);
+
+    return res.json(userdb);
+  } catch (err) {
+    logging(err);
+
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 const changeName = async (req, res) => {
   try {
     const name = req.body;
@@ -204,6 +217,7 @@ const changeName = async (req, res) => {
       message: 'Name Changed',
     });
   } catch (err) {
+    logging(err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
@@ -266,6 +280,7 @@ module.exports = {
   register,
   login,
   logout,
+  profile,
   followUser,
   changeBio,
   deleteAccount,
