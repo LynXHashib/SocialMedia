@@ -9,7 +9,11 @@ const cors = require('cors');
 const app = express();
 app.use(
   cors({
-    origin: ['http://localhost:5001', 'http://127.0.0.1:5001'],
+    origin: [
+      'http://localhost:5001',
+      'http://127.0.0.1:5001',
+      process.env.CORS_URL,
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
