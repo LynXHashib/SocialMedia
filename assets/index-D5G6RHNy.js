@@ -1402,6 +1402,7 @@ Please change the parent <Route path="${L}"> to <Route path="${L==="/"?"*":`${L}
         .btn-primary {
           background: #3b82f6;
           color: white;
+          text-decoration:none;
         }
 
         .btn-primary:hover:not(:disabled) {
