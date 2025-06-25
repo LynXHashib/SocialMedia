@@ -714,6 +714,7 @@ Please change the parent <Route path="${L}"> to <Route path="${L==="/"?"*":`${L}
           color: #1e293b;
           margin: 0 0 0.75rem;
           line-height: 1.4;
+          text-decoration:none;
         }
 
         .post-description {
