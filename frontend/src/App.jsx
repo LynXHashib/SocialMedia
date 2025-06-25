@@ -18,7 +18,7 @@ import './App.css';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename='/SocialMedia'>
         <div className='App'>
           <Navbar />
           <main
