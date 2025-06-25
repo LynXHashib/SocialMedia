@@ -14,6 +14,7 @@ app.use(
       'http://127.0.0.1:5001',
       process.env.CORS_URL,
       'https://lynxhashib.github.io/SocialMedia',
+      'https://lynxhashib.github.io',
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
