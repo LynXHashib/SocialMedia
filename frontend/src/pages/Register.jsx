@@ -226,6 +226,7 @@ const Register = () => {
           justify-content: center;
           padding: 2rem 0;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius:35px;
         }
 
         .auth-container {

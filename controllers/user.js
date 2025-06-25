@@ -79,47 +79,44 @@ const users = mongoose.model('users', userSchema);
 
 const register = async (req, res) => {
   try {
-    if (req.method == 'GET') {
+    const { name, password, email, gender } = req.body;
+    if (!name || !password || !email || !gender) {
       return res.json({
-        message: 'Input your name,password,email and gender(Male/Female)',
-      });
-    } else {
-      const { name, password, email, gender } = req.body;
-      if (!name || !password || !email || !gender) {
-        return res.json({
-          message: 'Wrong Inputs',
-        });
-      }
-      const checkExistingEmail = await users.findOne({ email: `${email}` });
-      if (!!checkExistingEmail) {
-        return res.json({
-          message: 'Email Already Exists',
-        });
-      }
-      const checkExistingUser = await users.findOne({ name: `${name}` });
-      if (!!checkExistingUser) {
-        return res.json({
-          message: 'Username Already Taken',
-        });
-      }
-      const uniqueToken = crypto.createHash('sha1').update(data).digest('hex');
-
-      sendMail(email, uniqueToken);
-      const newUser = await users.create({
-        name: name,
-        email: email,
-        password: password,
-        gender: gender,
-        verifytoken: uniqueToken,
-      });
-      console.log(newUser);
-      req.session.user = newUser;
-      return res.status(201).json({
-        message: `User:${name} created successfully. You can't access feed until you verify your email`,
-        name: name,
-        email: email,
+        message: 'Wrong Inputs',
       });
     }
+    const checkExistingEmail = await users.findOne({ email: `${email}` });
+    if (!!checkExistingEmail) {
+      return res.json({
+        message: 'Email Already Exists',
+      });
+    }
+    const checkExistingUser = await users.findOne({ name: `${name}` });
+    if (!!checkExistingUser) {
+      return res.json({
+        message: 'Username Already Taken',
+      });
+    }
+    const uniqueToken = crypto
+      .createHash('sha1')
+      .update(email + Date.now())
+      .digest('hex');
+
+    sendMail(email, uniqueToken);
+    const newUser = await users.create({
+      name: name,
+      email: email,
+      password: password,
+      gender: gender,
+      verifytoken: uniqueToken,
+    });
+    console.log(newUser);
+    req.session.user = newUser;
+    return res.status(201).json({
+      message: `User:${name} created successfully. You can't access feed until you verify your email`,
+      name: name,
+      email: email,
+    });
   } catch (err) {
     logging(err);
     res.status(500).json({ message: 'Internal Server Error' });
