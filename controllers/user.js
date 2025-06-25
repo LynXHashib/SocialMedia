@@ -102,7 +102,7 @@ const register = async (req, res) => {
       .update(email + Date.now())
       .digest('hex');
 
-    sendMail(email, uniqueToken);
+    await sendMail(email, uniqueToken);
     const newUser = await users.create({
       name: name,
       email: email,
@@ -131,7 +131,10 @@ const verification = async (req, res) => {
       user.verified = true;
       user.verifytoken = null;
       await user.save();
-      return res.json({ message: 'Account Verified' });
+      return res.json({
+        message:
+          'Account Verified. Now go back to the login page and login using email and password',
+      });
     } else {
       return res.json({
         message: 'Verification Failed. Try again from the beginning',
@@ -159,9 +162,12 @@ const login = async (req, res) => {
       });
     }
     if (!user.verified) {
-      user.verifytoken = crypto.createHash('sha1').update(data).digest('hex');
+      user.verifytoken = crypto
+        .createHash('sha1')
+        .update(user.email + Date.now())
+        .digest('hex');
       await user.save();
-      sendMail(user.email, user.verifytoken);
+      await sendMail(user.email, user.verifytoken);
       return res.json({
         message: 'A verfication code has been sent',
       });
