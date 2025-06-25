@@ -202,14 +202,19 @@ const singlePost = async (req, res) => {
 const comment = async (req, res) => {
   try {
     if (req.method == 'GET') {
-      return res.status(200).json({
-        comment: 'body',
-        commenton: 'query',
-      });
+      const postID = req.params.id;
+      const comment = await comments
+        .find({ commenton: postID })
+        .populate('commentby');
+      const allComment = comment.map((el) => ({
+        name: el.commentby.name,
+        comment: el.comment,
+      }));
+      return res.status(200).json(allComment);
     }
     const { comment } = req.body;
     const commentby = req.session.user._id;
-    const commenton = req.query.id;
+    const commenton = req.params.id;
     const postStatus = await posts.findById(commenton);
     if (!comment || comment.trim().length < 1) {
       return res.status(400).json({ message: 'Comment cannot be empty' });

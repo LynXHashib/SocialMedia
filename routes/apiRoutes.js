@@ -25,11 +25,11 @@ router.route('/user/follow').get(followUser);
 //Post Routes
 
 router.route('/feed').get(feed);
-router.route('/comment').get(comment).post(comment);
 router.route('/post').get(createPost).post(createPost);
 router.route('/post/delete').get(deletePost).post(deletePost);
 router.route('/likepost/:id').post(likePost);
 router.route('/dislikepost/:id').post(dislikePost);
+router.route('/:id/comment').get(comment).post(comment);
 router.route('/:id').get(singlePost);
 
 module.exports = router;

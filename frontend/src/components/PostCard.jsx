@@ -111,7 +111,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
             </span>
             <span className='stat-item'>
               <span className='stat-icon'>💬</span>
-              <span className='stat-count'>{post.comments?.length || 0}</span>
+              <span className='stat-count'>{post.comments || 0}</span>
             </span>
           </div>
 
