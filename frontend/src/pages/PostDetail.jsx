@@ -28,7 +28,11 @@ const PostDetail = () => {
 
       if (response.status === 200) {
         setPost(response.data);
-        setComments(response.data.postComments || []);
+        setComments(
+          Array.isArray(response.data.postComments)
+            ? response.data.postComments
+            : []
+        );
       }
     } catch (error) {
       console.error('Failed to fetch post:', error);
@@ -184,7 +188,9 @@ const PostDetail = () => {
               </span>
               <span className='stat-item'>
                 <span className='stat-icon'>💬</span>
-                <span className='stat-count'>{comments.length} comments</span>
+                <span className='stat-count'>
+                  {Array.isArray(comments) ? comments.length : 0} comments
+                </span>
               </span>
             </div>
 
@@ -209,7 +215,9 @@ const PostDetail = () => {
         </article>
 
         <section className='comments-section'>
-          <h2 className='comments-title'>Comments ({comments.length})</h2>
+          <h2 className='comments-title'>
+            Comments ({Array.isArray(comments) ? comments.length : 0})
+          </h2>
 
           <form onSubmit={handleCommentSubmit} className='comment-form'>
             <div className='comment-input-container'>
