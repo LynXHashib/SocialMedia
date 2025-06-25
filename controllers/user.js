@@ -61,7 +61,7 @@ const sendMail = async (email, uniqueToken) => {
       <div class="message">
         Thank you for registering! Please click the button below to verify your email address.
       </div>
-      <a href="http://localhost:5000/auth/verify?email=${email}&token=${uniqueToken}" class="verify-btn">
+      <a href="https://connecthub-eosin.vercel.app/auth/verify?email=${email}&token=${uniqueToken}" class="verify-btn">
         Verify Email
       </a>
       <div class="footer">
