@@ -136,7 +136,15 @@ const feed = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit)
       .populate('createdby', 'name');
-
+    const postIds = allPosts.map((el) => el._id);
+    const commentCounts = await comments.aggregate([
+      { $match: { commenton: { $in: postIds } } },
+      { $group: { _id: '$commenton', count: { $sum: 1 } } },
+    ]);
+    const commentCountMap = {};
+    commentCounts.forEach((c) => {
+      commentCountMap[c._id.toString()] = c.count;
+    });
     const postData = allPosts.map((el) => ({
       id: el._id,
       author: el.createdby.name,
@@ -145,6 +153,7 @@ const feed = async (req, res) => {
       description: el.description,
       likes: el.likedby.length,
       dislikes: el.dislikedby.length,
+      comments: commentCountMap[el._id.toString()] || 0,
       image: el.image,
     }));
     return res.status(200).json(postData);

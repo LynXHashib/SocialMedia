@@ -78,23 +78,24 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
       </div>
 
       <div className='post-content'>
-        <a href={`/api/${post.id}`}>
+        <Link to={`/post/${post.id}`}>
           <h2 className='post-title'>{post.title}</h2>
-        </a>
+        </Link>
         <p className='post-description'>{post.description}</p>
-
-        {post.image && (
-          <div className='post-image-container'>
-            <img
-              src={post.image}
-              alt={post.title}
-              className='post-image'
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
-            />
-          </div>
-        )}
+        <Link to={`/post/${post.id}`}>
+          {post.image && (
+            <div className='post-image-container'>
+              <img
+                src={post.image}
+                alt={post.title}
+                className='post-image'
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
+          )}{' '}
+        </Link>
       </div>
 
       {showActions && (
@@ -130,8 +131,8 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
               {isDisliking ? <div className='spinner small'></div> : '👎'}{' '}
               Dislike
             </button>
-            {post._id && (
-              <Link to={`/post/${post._id}`} className='action-btn comment-btn'>
+            {post.id && (
+              <Link to={`/post/${post.id}`} className='action-btn comment-btn'>
                 💬 Comment
               </Link>
             )}
