@@ -23,6 +23,7 @@ app.use(
 );
 
 app.use(express.json());
+app.set('trust proxy', 1);
 app.use(
   session({
     secret: process.env.SECRET,
@@ -55,6 +56,7 @@ const { authCheck } = require('./middlewares/app');
 const home = require('./controllers/home');
 
 //
+
 app.get('/', home);
 
 app.use('/auth', authRoute);
