@@ -218,7 +218,7 @@ const Register = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .auth-page {
           min-height: calc(100vh - 120px);
           display: flex;

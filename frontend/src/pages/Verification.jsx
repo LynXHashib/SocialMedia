@@ -1,18 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Verification = () => {
   return (
-    <div className="verification-page">
-      <div className="verification-container">
-        <div className="verification-icon">📧</div>
-        <h1 className="verification-title">Check Your Email</h1>
-        <p className="verification-message">
+    <div className='verification-page'>
+      <div className='verification-container'>
+        <div className='verification-icon'>📧</div>
+        <h1 className='verification-title'>Check Your Email</h1>
+        <p className='verification-message'>
           We've sent a verification link to your email address. Please check
           your inbox and click the link to verify your account.
         </p>
 
-        <div className="verification-instructions">
+        <div className='verification-instructions'>
           <h3>Next Steps:</h3>
           <ol>
             <li>Check your email inbox (and spam folder)</li>
@@ -21,24 +21,24 @@ const Verification = () => {
           </ol>
         </div>
 
-        <div className="verification-actions">
-          <Link to="/login" className="btn btn-primary">
+        <div className='verification-actions'>
+          <Link to='/login' className='btn btn-primary'>
             Go to Sign In
           </Link>
-          <Link to="/register" className="btn btn-outline">
+          <Link to='/register' className='btn btn-outline'>
             Back to Registration
           </Link>
         </div>
 
-        <div className="verification-help">
-          <p className="help-text">
+        <div className='verification-help'>
+          <p className='help-text'>
             Didn't receive the email? Check your spam folder or try registering
             again.
           </p>
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .verification-page {
           min-height: calc(100vh - 120px);
           display: flex;

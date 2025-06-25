@@ -154,7 +154,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .profile-page {
           max-width: 900px;
           margin: 0 auto;

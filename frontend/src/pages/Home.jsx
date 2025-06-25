@@ -90,7 +90,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         .home-page {
           min-height: calc(100vh - 120px);
         }

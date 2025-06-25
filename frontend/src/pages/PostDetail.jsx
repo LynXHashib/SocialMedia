@@ -266,7 +266,7 @@ const PostDetail = () => {
         </section>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .post-detail-page {
           max-width: 800px;
           margin: 0 auto;

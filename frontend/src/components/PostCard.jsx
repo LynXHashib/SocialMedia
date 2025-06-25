@@ -132,7 +132,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .post-card {
           background: white;
           border-radius: 0.75rem;

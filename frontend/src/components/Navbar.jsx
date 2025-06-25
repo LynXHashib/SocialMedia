@@ -78,7 +78,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .navbar {
           background-color: white;
           border-bottom: 1px solid #e5e7eb;

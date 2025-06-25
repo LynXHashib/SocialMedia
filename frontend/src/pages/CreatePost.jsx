@@ -183,7 +183,7 @@ const CreatePost = () => {
         </form>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .create-post-page {
           max-width: 700px;
           margin: 0 auto;

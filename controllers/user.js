@@ -185,7 +185,7 @@ const logout = async (req, res) => {
   try {
     req.session.destroy(() => {
       res.clearCookie('connect.sid');
-      return res.json({
+      return res.status(200).json({
         message: 'Logout Successful',
       });
     });

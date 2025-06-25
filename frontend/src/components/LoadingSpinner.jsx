@@ -1,18 +1,18 @@
-import React from "react";
+import React from 'react';
 
-const LoadingSpinner = ({ size = "medium", text = "Loading..." }) => {
+const LoadingSpinner = ({ size = 'medium', text = 'Loading...' }) => {
   const sizeClasses = {
-    small: { width: "16px", height: "16px" },
-    medium: { width: "32px", height: "32px" },
-    large: { width: "48px", height: "48px" },
+    small: { width: '16px', height: '16px' },
+    medium: { width: '32px', height: '32px' },
+    large: { width: '48px', height: '48px' },
   };
 
   return (
-    <div className="loading-container">
-      <div className="spinner" style={sizeClasses[size]}></div>
-      {text && <p className="loading-text">{text}</p>}
+    <div className='loading-container'>
+      <div className='spinner' style={sizeClasses[size]}></div>
+      {text && <p className='loading-text'>{text}</p>}
 
-      <style jsx>{`
+      <style>{`
         .loading-container {
           display: flex;
           flex-direction: column;
