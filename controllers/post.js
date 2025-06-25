@@ -71,7 +71,7 @@ const deletePost = async (req, res) => {
 };
 const likePost = async (req, res) => {
   try {
-    const postID = req.query.id;
+    const postID = req.params.id;
     let post = await posts.findById(postID);
     if (!post) return res.status(400).json({ message: 'Post dont exist' });
     let i = post.likedby.indexOf(req.session.user._id);
@@ -98,7 +98,7 @@ const likePost = async (req, res) => {
 };
 const dislikePost = async (req, res) => {
   try {
-    const postID = req.query.id;
+    const postID = req.params.id;
     let post = await posts.findById(postID);
     if (!post) return res.status(400).json({ message: 'Post dont exist' });
 
@@ -138,10 +138,13 @@ const feed = async (req, res) => {
       .populate('createdby', 'name');
 
     const postData = allPosts.map((el) => ({
+      id: el._id,
       author: el.createdby.name,
       date: el.date,
       title: el.title,
       description: el.description,
+      likes: el.likedby.length,
+      dislikes: el.dislikedby.length,
       image: el.image,
     }));
     return res.status(200).json(postData);
@@ -154,8 +157,8 @@ const feed = async (req, res) => {
 };
 const singlePost = async (req, res) => {
   try {
-    const postID = req.query.id;
-    const post = await posts.findById(postID).populate('createdby');
+    const postID = req.params.id;
+    const post = await posts.findById(postID).populate('createdby', 'name');
     const commentData = await comments
       .find({ commenton: postID })
       .populate('commentby', 'name');
@@ -164,6 +167,7 @@ const singlePost = async (req, res) => {
         message: 'Post dont exist',
       });
     }
+    console.log(post);
 
     const postComments = commentData.map((el) => ({
       name: el.commentby.name,
@@ -173,8 +177,8 @@ const singlePost = async (req, res) => {
       image: post.image,
       title: post.title,
       description: post.description,
-      likes: post.likedby.length,
-      dislikes: post.dislikedby.length,
+      likes: post.likedby.length || 0,
+      dislikes: post.dislikedby.length || 0,
       author: post.createdby.name,
       date: post.date,
       postComments,

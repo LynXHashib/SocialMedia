@@ -6,7 +6,6 @@ import api from '../api';
 const PostCard = ({ post, onPostUpdate, showActions = true }) => {
   const [isLiking, setIsLiking] = useState(false);
   const [isDisliking, setIsDisliking] = useState(false);
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -17,13 +16,19 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
       minute: '2-digit',
     });
   };
-
+  const handleSinglePost = async () => {
+    try {
+      const response = await api.get(`/api/${post.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleLike = async () => {
-    if (isLiking || !post._id) return;
+    if (isLiking || !post.id) return;
 
     setIsLiking(true);
     try {
-      const response = await api.post(`/api/likepost?id=${post._id}`);
+      const response = await api.post(`/api/likepost/${post.id}`);
       if (response.status === 201) {
         toast.success('Post liked!');
         if (onPostUpdate) {
@@ -39,11 +44,11 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
   };
 
   const handleDislike = async () => {
-    if (isDisliking || !post._id) return;
+    if (isDisliking || !post.id) return;
 
     setIsDisliking(true);
     try {
-      const response = await api.post(`/api/dislikepost?id=${post._id}`);
+      const response = await api.post(`/api/dislikepost/${post.id}`);
       if (response.status === 201) {
         toast.success('Post disliked!');
         if (onPostUpdate) {
@@ -73,7 +78,9 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
       </div>
 
       <div className='post-content'>
-        <h2 className='post-title'>{post.title}</h2>
+        <a href={`/api/${post.id}`}>
+          <h2 className='post-title'>{post.title}</h2>
+        </a>
         <p className='post-description'>{post.description}</p>
 
         {post.image && (

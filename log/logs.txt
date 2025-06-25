@@ -102,3 +102,111 @@
     at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
     at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
 
+2025-06-25T10:56:57.639Z TypeError: Cannot read properties of undefined (reading 'id')
+    at singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:157:30)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:600:14)
+    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:610:14)
+    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:664:3)
+
+2025-06-25T10:57:21.192Z TypeError: Cannot read properties of undefined (reading 'id')
+    at singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:157:30)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
+    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
+    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
+    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:600:14)
+    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:610:14)
+    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:664:3)
+
+2025-06-25T10:58:30.651Z CastError: Cast to ObjectId failed for value "feed" (type string) at path "_id" for model "posts"
+    at SchemaObjectId.cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1255:12)
+    at SchemaType.castForQuery (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1673:17)
+    at cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:5055:12)
+    at Query._castConditions (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:2351:10)
+    at model.Query._findOne (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:2674:8)
+    at model.Query.exec (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:4604:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:158:18)
+
+2025-06-25T11:33:54.011Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:33:54.023Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:33:58.568Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:33:58.574Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:02.174Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:02.180Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:32.833Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:32.846Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:33.348Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:33.356Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:33.659Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+2025-06-25T11:34:33.667Z TypeError: Cannot read properties of undefined (reading 'length')
+    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
+    at Array.map (<anonymous>)
+    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+

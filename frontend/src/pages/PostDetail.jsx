@@ -24,7 +24,7 @@ const PostDetail = () => {
   const fetchPost = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/api/?id=${id}`);
+      const response = await api.get(`/api/${id}`);
 
       if (response.status === 200) {
         setPost(response.data);
@@ -44,7 +44,7 @@ const PostDetail = () => {
 
     setIsLiking(true);
     try {
-      const response = await api.post(`/api/likepost?id=${id}`);
+      const response = await api.post(`/api/likepost/${id}`);
       if (response.status === 201) {
         toast.success('Post liked!');
         await fetchPost(); // Refresh post data
@@ -61,7 +61,7 @@ const PostDetail = () => {
 
     setIsDisliking(true);
     try {
-      const response = await api.post(`/api/dislikepost?id=${id}`);
+      const response = await api.post(`/api/dislikepost/${id}`);
       if (response.status === 201) {
         toast.success('Post disliked!');
         await fetchPost(); // Refresh post data
@@ -172,12 +172,14 @@ const PostDetail = () => {
             <div className='engagement-stats'>
               <span className='stat-item'>
                 <span className='stat-icon'>👍</span>
-                <span className='stat-count'>{post.likes || 0} likes</span>
+                <span className='stat-count'>
+                  {post.likedby.length || 0} likes
+                </span>
               </span>
               <span className='stat-item'>
                 <span className='stat-icon'>👎</span>
                 <span className='stat-count'>
-                  {post.dislikes || 0} dislikes
+                  {post.dislikedby.length || 0} dislikes
                 </span>
               </span>
               <span className='stat-item'>
