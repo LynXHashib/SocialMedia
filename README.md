@@ -45,7 +45,7 @@ A modern social media application built with the MERN stack, featuring real-time
 
 ## 🔗 Links
 
-- **🌐 Live Application**: [ConnectHub App](https://connecthub-eosin.vercel.app/)
+- **🌐 Live Application**: [ConnectHub App](https://lynxhashib.github.io/SocialMedia/)
 - **📋 API Documentation**: [API Endpoints](https://connecthub-eosin.vercel.app/docs/)
 - **📂 GitHub Repository**: [Source Code](https://github.com/LynXHashib/SocialMedia/)
 
