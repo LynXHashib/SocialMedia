@@ -1,0 +1,153 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Social Media API",
+    "version": "1.0.0",
+    "description": "API documentation for Social Media app"
+  },
+  "servers": [{ "url": "/api" }],
+  "paths": {
+    "/profile": {
+      "get": {
+        "summary": "Get user profile",
+        "responses": { "200": { "description": "User profile" } }
+      }
+    },
+    "/user/follow": {
+      "get": {
+        "summary": "Follow a user",
+        "responses": { "200": { "description": "Followed user" } }
+      }
+    },
+    "/feed": {
+      "get": {
+        "summary": "Get post feed",
+        "responses": { "200": { "description": "List of posts" } }
+      }
+    },
+    "/post": {
+      "post": {
+        "summary": "Create a new post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string" }
+                },
+                "required": ["title", "description"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Post created" } }
+      }
+    },
+    "/post/delete": {
+      "delete": {
+        "summary": "Delete a post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Post deleted" } }
+      }
+    },
+    "/likepost/{id}": {
+      "post": {
+        "summary": "Like a post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "201": { "description": "Post liked" } }
+      }
+    },
+    "/dislikepost/{id}": {
+      "post": {
+        "summary": "Dislike a post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "201": { "description": "Post disliked" } }
+      }
+    },
+    "/{id}/comment": {
+      "get": {
+        "summary": "Get comments for a post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "List of comments" } }
+      },
+      "post": {
+        "summary": "Add a comment to a post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": { "type": "string" }
+                },
+                "required": ["comment"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Comment added" } }
+      }
+    },
+    "/{id}": {
+      "get": {
+        "summary": "Get a single post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "Single post" } }
+      }
+    }
+  }
+}
