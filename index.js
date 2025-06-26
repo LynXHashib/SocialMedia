@@ -58,7 +58,7 @@ const home = require('./controllers/home');
 //
 
 app.get('/', home);
-app.use('/api-docs', apiRoutes);
+app.use('/api-docs', apiRoute);
 app.use('/auth', authRoute);
 app.use('/api', authCheck, apiRoute);
 app.use((req, res) => {
