@@ -6,6 +6,9 @@ const session = require('express-session');
 const dotenv = require('dotenv').config();
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const app = express();
 app.use(
   cors({
@@ -55,6 +58,8 @@ const authRoute = require('./routes/authRoute');
 const { authCheck } = require('./middlewares/app');
 const home = require('./controllers/home');
 
+//SWAGGER
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //
 
 app.get('/', home);

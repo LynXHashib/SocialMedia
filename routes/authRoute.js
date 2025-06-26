@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
 const {
   register,
   login,
@@ -10,8 +8,6 @@ const {
 } = require('../controllers/user');
 
 // SWAGGER
-router.use('/api-docs', swaggerUi.serve);
-router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 //AUTH
 router.route('/register').post(register);
