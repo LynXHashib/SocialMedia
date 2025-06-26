@@ -26,17 +26,35 @@ const PostDetail = () => {
       setLoading(true);
       const response = await api.get(`/api/${id}`);
 
-      if (response.status === 200) {
-        setPost(response.data);
-        setComments(
-          Array.isArray(response.data.postComments)
-            ? response.data.postComments
-            : []
-        );
+      if (response.status === 200 && response.data) {
+        const postData = response.data;
+
+        // Validate and set post data
+        setPost(postData);
+
+        // Safely handle comments - ensure it's always an array
+        const commentsData = postData.postComments;
+        if (Array.isArray(commentsData)) {
+          setComments(commentsData);
+        } else {
+          console.warn('Comments data is not an array:', commentsData);
+          setComments([]);
+        }
+      } else {
+        throw new Error('Invalid response from server');
       }
     } catch (error) {
       console.error('Failed to fetch post:', error);
-      toast.error('Failed to load post');
+
+      // More specific error handling
+      if (error.response?.status === 404) {
+        toast.error('Post not found');
+      } else if (error.response?.status >= 500) {
+        toast.error('Server error. Please try again later.');
+      } else {
+        toast.error('Failed to load post');
+      }
+
       navigate('/feed');
     } finally {
       setLoading(false);
@@ -44,7 +62,7 @@ const PostDetail = () => {
   };
 
   const handleLike = async () => {
-    if (isLiking) return;
+    if (isLiking || !post) return;
 
     setIsLiking(true);
     try {
@@ -54,14 +72,19 @@ const PostDetail = () => {
         await fetchPost(); // Refresh post data
       }
     } catch (error) {
-      toast.error('Failed to like post');
+      console.error('Like error:', error);
+      if (error.response?.status === 409) {
+        toast.info('You have already liked this post');
+      } else {
+        toast.error('Failed to like post');
+      }
     } finally {
       setIsLiking(false);
     }
   };
 
   const handleDislike = async () => {
-    if (isDisliking) return;
+    if (isDisliking || !post) return;
 
     setIsDisliking(true);
     try {
@@ -71,7 +94,12 @@ const PostDetail = () => {
         await fetchPost(); // Refresh post data
       }
     } catch (error) {
-      toast.error('Failed to dislike post');
+      console.error('Dislike error:', error);
+      if (error.response?.status === 409) {
+        toast.info('You have already disliked this post');
+      } else {
+        toast.error('Failed to dislike post');
+      }
     } finally {
       setIsDisliking(false);
     }
@@ -80,15 +108,21 @@ const PostDetail = () => {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
-    if (!commentText.trim()) {
+    const trimmedComment = commentText.trim();
+    if (!trimmedComment) {
       toast.error('Please enter a comment');
+      return;
+    }
+
+    if (trimmedComment.length > 500) {
+      toast.error('Comment is too long (max 500 characters)');
       return;
     }
 
     setSubmittingComment(true);
     try {
-      const response = await api.post(`/api/comment?id=${id}`, {
-        comment: commentText.trim(),
+      const response = await api.post(`/api/${id}/comment`, {
+        comment: trimmedComment,
       });
 
       if (response.status === 201) {
@@ -98,21 +132,47 @@ const PostDetail = () => {
       }
     } catch (error) {
       console.error('Comment submission error:', error);
-      toast.error('Failed to add comment');
+
+      if (error.response?.status === 400) {
+        toast.error('Invalid comment data');
+      } else if (error.response?.status === 401) {
+        toast.error('Please log in to comment');
+      } else {
+        toast.error('Failed to add comment');
+      }
     } finally {
       setSubmittingComment(false);
     }
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return 'Invalid date';
+      }
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Unknown date';
+    }
+  };
+
+  const getAuthorInitial = (author) => {
+    if (!author || typeof author !== 'string') return 'U';
+    return author.charAt(0).toUpperCase();
+  };
+
+  const safeGetNumber = (value) => {
+    if (typeof value === 'number') return value;
+    if (Array.isArray(value)) return value.length;
+    return 0;
   };
 
   if (loading) {
@@ -123,7 +183,12 @@ const PostDetail = () => {
     return (
       <div className='error-container'>
         <h2>Post not found</h2>
-        <Link to='/feed' className='btn btn-primary'>
+        <p>The post you're looking for doesn't exist or has been removed.</p>
+        <Link
+          to='/feed'
+          style='text-decoration:none;'
+          className='btn btn-primary'
+        >
           Back to Feed
         </Link>
       </div>
@@ -143,7 +208,7 @@ const PostDetail = () => {
           <div className='post-meta'>
             <div className='author-info'>
               <div className='author-avatar'>
-                {post.author ? post.author.charAt(0).toUpperCase() : 'U'}
+                {getAuthorInitial(post.author)}
               </div>
               <div className='author-details'>
                 <h3 className='author-name'>
@@ -155,14 +220,16 @@ const PostDetail = () => {
           </div>
 
           <div className='post-body'>
-            <h1 className='post-title'>{post.title}</h1>
-            <p className='post-description'>{post.description}</p>
+            <h1 className='post-title'>{post.title || 'Untitled Post'}</h1>
+            <p className='post-description'>
+              {post.description || 'No description available.'}
+            </p>
 
             {post.image && (
               <div className='post-image-container'>
                 <img
                   src={post.image}
-                  alt={post.title}
+                  alt={post.title || 'Post image'}
                   className='post-image'
                   onError={(e) => {
                     e.target.style.display = 'none';
@@ -177,20 +244,24 @@ const PostDetail = () => {
               <span className='stat-item'>
                 <span className='stat-icon'>👍</span>
                 <span className='stat-count'>
-                  {post.likedby.length || 0} likes
+                  {safeGetNumber(
+                    post.likes || (post.likedby && post.likedby.length)
+                  )}{' '}
+                  likes
                 </span>
               </span>
               <span className='stat-item'>
                 <span className='stat-icon'>👎</span>
                 <span className='stat-count'>
-                  {post.dislikedby.length || 0} dislikes
+                  {safeGetNumber(
+                    post.dislikes || (post.dislikedby && post.dislikedby.length)
+                  )}{' '}
+                  dislikes
                 </span>
               </span>
               <span className='stat-item'>
                 <span className='stat-icon'>💬</span>
-                <span className='stat-count'>
-                  {Array.isArray(comments) ? comments.length : 0} comments
-                </span>
+                <span className='stat-count'>{comments.length} comments</span>
               </span>
             </div>
 
@@ -199,6 +270,7 @@ const PostDetail = () => {
                 onClick={handleLike}
                 disabled={isLiking}
                 className='engagement-btn like-btn'
+                aria-label='Like this post'
               >
                 {isLiking ? <div className='spinner small'></div> : '👍'} Like
               </button>
@@ -206,6 +278,7 @@ const PostDetail = () => {
                 onClick={handleDislike}
                 disabled={isDisliking}
                 className='engagement-btn dislike-btn'
+                aria-label='Dislike this post'
               >
                 {isDisliking ? <div className='spinner small'></div> : '👎'}{' '}
                 Dislike
@@ -215,9 +288,7 @@ const PostDetail = () => {
         </article>
 
         <section className='comments-section'>
-          <h2 className='comments-title'>
-            Comments ({Array.isArray(comments) ? comments.length : 0})
-          </h2>
+          <h2 className='comments-title'>Comments ({comments.length})</h2>
 
           <form onSubmit={handleCommentSubmit} className='comment-form'>
             <div className='comment-input-container'>
@@ -229,9 +300,14 @@ const PostDetail = () => {
                 rows='3'
                 maxLength='500'
                 disabled={submittingComment}
+                aria-label='Write a comment'
               />
               <div className='comment-form-footer'>
-                <span className='character-count'>
+                <span
+                  className={`character-count ${
+                    commentText.length > 450 ? 'warning' : ''
+                  }`}
+                >
                   {commentText.length}/500
                 </span>
                 <button
@@ -259,15 +335,17 @@ const PostDetail = () => {
               </div>
             ) : (
               comments.map((comment, index) => (
-                <div key={index} className='comment-item'>
+                <div key={`comment-${index}`} className='comment-item'>
                   <div className='comment-avatar'>
-                    {comment.name ? comment.name.charAt(0).toUpperCase() : 'U'}
+                    {getAuthorInitial(comment.name)}
                   </div>
                   <div className='comment-content'>
                     <div className='comment-author'>
                       {comment.name || 'Anonymous'}
                     </div>
-                    <div className='comment-text'>{comment.comment}</div>
+                    <div className='comment-text'>
+                      {comment.comment || 'No comment text'}
+                    </div>
                   </div>
                 </div>
               ))
@@ -494,6 +572,12 @@ const PostDetail = () => {
         .character-count {
           font-size: 0.875rem;
           color: #6b7280;
+          transition: color 0.2s ease;
+        }
+
+        .character-count.warning {
+          color: #f59e0b;
+          font-weight: 500;
         }
 
         .comments-list {
@@ -546,15 +630,74 @@ const PostDetail = () => {
           line-height: 1.6;
         }
 
+        .spinner {
+          width: 20px;
+          height: 20px;
+          border: 2px solid #e5e7eb;
+          border-top-color: #3b82f6;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
         .spinner.small {
           width: 16px;
           height: 16px;
           border-width: 2px;
         }
 
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
         .error-container {
           text-align: center;
           padding: 4rem 2rem;
+          max-width: 600px;
+          margin: 2rem auto;
+          background: white;
+          border-radius: 1rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-container h2 {
+          color: #dc2626;
+          margin-bottom: 1rem;
+        }
+
+        .error-container p {
+          color: #6b7280;
+          margin-bottom: 2rem;
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          border: none;
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          text-decoration: none;
+        }
+
+        .btn-primary {
+          background: #3b82f6;
+          color: white;
+          text-decoration:none;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+          background: #2563eb;
+        }
+
+        .btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
 
         @media (max-width: 768px) {
@@ -589,6 +732,11 @@ const PostDetail = () => {
 
           .comment-form-footer .btn {
             width: 100%;
+          }
+
+          .engagement-stats {
+            gap: 1rem;
+            flex-wrap: wrap;
           }
         }
       `}</style>

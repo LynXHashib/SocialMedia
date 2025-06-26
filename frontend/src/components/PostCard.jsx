@@ -78,8 +78,10 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
       </div>
 
       <div className='post-content'>
-        <Link to={`/post/${post.id}`}>
-          <h2 className='post-title'>{post.title}</h2>
+        <Link style={{ textDecoration: 'none' }} to={`/post/${post.id}`}>
+          <h2 className='post-title' style={{ textDecoration: 'none' }}>
+            {post.title}
+          </h2>
         </Link>
         <p className='post-description'>{post.description}</p>
         <Link to={`/post/${post.id}`}>
@@ -206,6 +208,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
           color: #1e293b;
           margin: 0 0 0.75rem;
           line-height: 1.4;
+          text-decoration:none;
         }
 
         .post-description {
