@@ -103,11 +103,12 @@ npm run dev
 Create a `.env` file in the backend directory:
 
 ```env
+CORS_URL=your_site_url
 MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+PORT=server_port
 EMAIL_USER=your_email_address
-EMAIL_PASS=your_email_password
-SESSION_SECRET=your_session_secret
+EMAIL_PASS=your_email_app_password
+SECRET=your_session_secret
 ```
 
 ## 📖 API Documentation
