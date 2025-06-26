@@ -18,10 +18,6 @@ const {
   feed,
 } = require('../controllers/post');
 
-// SWAGGER
-router.use('/api-docs', swaggerUi.serve);
-router.get('/api-docs', swaggerUi.setup(swaggerDocument));
-
 // Authentication routes
 //User Routes
 router.route('/profile').get(profile);

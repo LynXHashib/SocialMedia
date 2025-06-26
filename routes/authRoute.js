@@ -7,6 +7,11 @@ const {
   verification,
 } = require('../controllers/user');
 
+// SWAGGER
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerDocument));
+
+//AUTH
 router.route('/register').post(register);
 router.route('/login').post(login);
 router.route('/logout').delete(logout);
