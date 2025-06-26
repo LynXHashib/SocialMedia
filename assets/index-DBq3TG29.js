@@ -149,49 +149,51 @@ Please change the parent <Route path="${L}"> to <Route path="${L==="/"?"*":`${L}
           background-color: #eff6ff;
         }
 
-        @media (max-width: 768px) {
-          .navbar-container {
-            padding: 0 0.75rem;
-          }
-
+        @media (max-width: 1024px) {
           .navbar-toggle {
             display: flex;
           }
-
           .navbar-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
+            position: fixed;
+            top: 0;
             left: 0;
+            right: 0;
             background: white;
             flex-direction: column;
             align-items: stretch;
             gap: 0.5rem;
-            padding: 1rem 0;
+            padding: 2.5rem 0 1rem 0;
             border-bottom-left-radius: 1rem;
             border-bottom-right-radius: 1rem;
             box-shadow: 0 8px 24px rgba(0,0,0,0.08);
             display: none;
+            z-index: 999;
           }
           .navbar-menu.open {
             display: flex;
           }
-
           .navbar-link,
           .btn {
             width: 100%;
             text-align: left;
             padding: 0.75rem 1.5rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
           }
-
+          .navbar-container {
+            padding: 0 0.75rem;
+          }
           .navbar-brand h1 {
             font-size: 1.25rem;
           }
-          
           .navbar-brand img {
             height: 32px !important;
             width: 48px !important;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .navbar-menu {
+            padding-top: 3.5rem;
           }
         }
       `})]})},Jr=({size:l="medium",text:s="Loading..."})=>{const u={small:{width:"16px",height:"16px"},medium:{width:"32px",height:"32px"},large:{width:"48px",height:"48px"}};return m.jsxs("div",{className:"loading-container",children:[m.jsx("div",{className:"spinner",style:u[l]}),s&&m.jsx("p",{className:"loading-text",children:s}),m.jsx("style",{children:`
