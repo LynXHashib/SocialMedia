@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-
+const path = require('path');
 const app = express();
 app.use(
   cors({
@@ -59,6 +59,7 @@ const { authCheck } = require('./middlewares/app');
 const home = require('./controllers/home');
 
 //SWAGGER
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //
 
