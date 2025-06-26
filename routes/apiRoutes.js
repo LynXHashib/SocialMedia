@@ -1,4 +1,6 @@
-const express = require('express');
+const router = require('express').Router();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 const {
   register,
   login,
@@ -15,7 +17,10 @@ const {
   comment,
   feed,
 } = require('../controllers/post');
-const router = express.Router();
+
+// SWAGGER
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 // Authentication routes
 //User Routes
@@ -25,11 +30,11 @@ router.route('/user/follow').get(followUser);
 //Post Routes
 
 router.route('/feed').get(feed);
-router.route('/post').get(createPost).post(createPost);
-router.route('/post/delete').get(deletePost).post(deletePost);
+router.route('/post').post(createPost);
+router.route('/post/delete').delete(deletePost);
 router.route('/likepost/:id').post(likePost);
 router.route('/dislikepost/:id').post(dislikePost);
-router.route('/:id/comment').get(comment).post(comment);
+router.route('/:id/comment').post(comment);
 router.route('/:id').get(singlePost);
 
 module.exports = router;

@@ -19,7 +19,8 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "mongoose": "^8.16.0",
-    "nodemailer": "^7.0.3"
+    "nodemailer": "^7.0.3",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
