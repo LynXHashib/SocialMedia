@@ -2,7 +2,7 @@
 
 A modern social media application built with the MERN stack, featuring real-time interactions and seamless user experience.
 
-[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Visit%20App-blue?style=for-the-badge)](https://connecthub-eosin.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Visit%20App-blue?style=for-the-badge)](https://lynxhashib.github.io/SocialMedia/)
 [![API Documentation](https://img.shields.io/badge/📚%20API%20Docs-View%20Endpoints-green?style=for-the-badge)](https://connecthub-eosin.vercel.app/docs/)
 [![GitHub Repo](https://img.shields.io/badge/📂%20GitHub-Repository-black?style=for-the-badge)](https://github.com/LynXHashib/SocialMedia/)
 
