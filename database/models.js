@@ -64,6 +64,10 @@ const userSchema = new mongoose.Schema({
     type: [ObjectId],
     default: [],
   },
+  following: {
+    type: [ObjectId],
+    default: [],
+  },
   postcount: {
     type: Number,
     default: 0,
@@ -89,4 +93,56 @@ const commentSchema = new mongoose.Schema({
     ref: 'posts',
   },
 });
-module.exports = { postSchema, userSchema, commentSchema };
+const messageSchema = new mongoose.Schema({
+  conversationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'conversations',
+    required: true,
+  },
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users',
+    required: true,
+  },
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users',
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  sentAt: {
+    type: Date,
+    default: Date.now,
+  },
+  read: {
+    type: Boolean,
+    default: false,
+  },
+});
+const conversationSchema = new mongoose.Schema({
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users',
+      required: true,
+    },
+  ],
+  lastMessage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'messages',
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+module.exports = {
+  postSchema,
+  userSchema,
+  commentSchema,
+  messageSchema,
+  conversationSchema,
+};

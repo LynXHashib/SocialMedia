@@ -14,6 +14,8 @@ import CreatePost from './pages/CreatePost';
 import PostDetail from './pages/PostDetail';
 import Profile from './pages/Profile';
 import Verification from './pages/Verification';
+import Messages from './pages/Messages';
+import Conversation from './pages/Conversation';
 import './App.css';
 function App() {
   return (
@@ -59,6 +61,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/messages'
+                element={
+                  <ProtectedRoute>
+                    <Messages />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/conversation/:id'
+                element={
+                  <ProtectedRoute>
+                    <Conversation />
                   </ProtectedRoute>
                 }
               />

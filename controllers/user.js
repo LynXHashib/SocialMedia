@@ -2,6 +2,7 @@ const { default: mongoose } = require('mongoose');
 const { userSchema } = require('../database/models');
 const { logging, transporter } = require('../modules/app');
 const crypto = require('crypto');
+const { all } = require('axios');
 //   CONSTANTS
 
 const sendMail = async (email, uniqueToken) => {
@@ -147,7 +148,6 @@ const verification = async (req, res) => {
 };
 const login = async (req, res) => {
   try {
-    console.log(req.body);
     const { name, email, password } = req.body;
     if ((!name && !email) || !password) {
       return res.json({ success: false, message: 'Wrong Input' });
@@ -198,12 +198,55 @@ const logout = async (req, res) => {
 };
 
 // USER
+const allUsers = async (req, res) => {
+  try {
+    const allUsers = await users.find({ verified: true });
+    const usersData = allUsers
+      .filter((user) => user._id.toString() !== req.session.user._id.toString())
+      .map((user) => ({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        followers: user.followers.length,
+        following: user.following.length,
+      }));
+    return res.json(usersData);
+  } catch (err) {
+    logging(err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const searchUser = async (req, res) => {
+  try {
+    const searchQuery = req.query.q;
+    if (!searchQuery) {
+      return res.status(400).json({ message: 'Search query is required' });
+    }
+    const regex = new RegExp(searchQuery, 'i');
+    const results = await users.find({
+      $or: [{ name: regex }, { email: regex }],
+    });
+    return res.json(results);
+  } catch (err) {
+    logging(err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 const profile = async (req, res) => {
   try {
     const userID = req.session.user._id;
     const userdb = await users.findById(userID);
 
-    return res.json(userdb);
+    return res.status(200).json({
+      _id: userdb._id,
+      name: userdb.name,
+      email: userdb.email,
+      bio: userdb.bio,
+      followers: userdb.followers.length,
+      following: userdb.following.length,
+      image: userdb.image || '',
+      verified: userdb.verified,
+    });
   } catch (err) {
     logging(err);
 
@@ -283,8 +326,11 @@ module.exports = {
   register,
   login,
   logout,
+  allUsers,
+  searchUser,
   profile,
   followUser,
+  changeName,
   changeBio,
   deleteAccount,
   verification,

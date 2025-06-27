@@ -1,132 +1,10 @@
-2025-06-19T06:44:50.928Z MongoServerError: E11000 duplicate key error collection: socialMedia.users index: name_1 dup key: { name: "Hashibul Islam" }
-    at InsertOneOperation.execute (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/operations/insert.js:51:19)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async tryOperation (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/operations/execute_operation.js:207:20)
-    at async executeOperation (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/operations/execute_operation.js:75:16)
-    at async Collection.insertOne (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongodb/lib/collection.js:157:16)
-2025-06-20T08:00:41.440Z TypeError: Cannot read properties of undefined (reading 'name')
-    at home (/home/hashib/Code/ActualApps/SocialMedia/controllers/home.js:14:36)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-20T08:02:27.305Z TypeError: Cannot read properties of undefined (reading 'toString')
-    at home (/home/hashib/Code/ActualApps/SocialMedia/controllers/home.js:14:36)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-20T12:41:53.242Z TypeError: Cannot read properties of undefined (reading '_id')
-    at comment (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:184:40)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
-    at router.handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:186:3)
-
-2025-06-20T12:47:45.922Z ValidationError: comments validation failed: commenton: Path `commenton` is required.
+2025-06-27T13:11:30.974Z ValidationError: conversations validation failed: participants.0: Path `participants.0` is required.
     at Document.invalidate (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/document.js:3352:32)
     at /home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/document.js:3113:17
     at /home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1407:9
     at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
 
-2025-06-20T12:50:27.509Z TypeError: Cannot read properties of undefined (reading 'id')
-    at singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:144:30)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
-    at router.handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:186:3)
-
-2025-06-24T19:38:08.238Z TypeError: Converting circular structure to JSON
-    --> starting at object with constructor 'MongoClient'
-    |     property 's' -> object with constructor 'Object'
-    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
-    --- property 'client' closes the circle
-    at JSON.stringify (<anonymous>)
-    at stringify (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:1020:12)
-    at ServerResponse.json (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:243:14)
-    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:202:16)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-
-2025-06-24T19:39:15.729Z TypeError: Converting circular structure to JSON
-    --> starting at object with constructor 'MongoClient'
-    |     property 's' -> object with constructor 'Object'
-    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
-    --- property 'client' closes the circle
-    at JSON.stringify (<anonymous>)
-    at stringify (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:1020:12)
-    at ServerResponse.json (/home/hashib/Code/ActualApps/SocialMedia/node_modules/express/lib/response.js:243:14)
-    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:203:16)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-
-2025-06-24T19:39:39.988Z TypeError: Converting circular structure to JSON
-    --> starting at object with constructor 'MongoClient'
-    |     property 's' -> object with constructor 'Object'
-    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
-    --- property 'client' closes the circle
-    at JSON.stringify (<anonymous>)
-    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:203:26)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
-
-2025-06-24T19:39:52.365Z SyntaxError: Unexpected token 'u', "users.find"... is not valid JSON
-    at JSON.parse (<anonymous>)
-    at profile (/home/hashib/Code/ActualApps/SocialMedia/controllers/user.js:203:26)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:582:12)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:291:5)
-
-2025-06-25T10:56:57.639Z TypeError: Cannot read properties of undefined (reading 'id')
-    at singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:157:30)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:600:14)
-    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:610:14)
-    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:664:3)
-
-2025-06-25T10:57:21.192Z TypeError: Cannot read properties of undefined (reading 'id')
-    at singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:157:30)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at next (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:157:13)
-    at Route.dispatch (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/route.js:117:3)
-    at handle (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:435:11)
-    at Layer.handleRequest (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/lib/layer.js:152:17)
-    at /home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:295:15
-    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:600:14)
-    at param (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:610:14)
-    at processParams (/home/hashib/Code/ActualApps/SocialMedia/node_modules/router/index.js:664:3)
-
-2025-06-25T10:58:30.651Z CastError: Cast to ObjectId failed for value "feed" (type string) at path "_id" for model "posts"
+2025-06-27T13:50:45.241Z CastError: Cast to ObjectId failed for value "user" (type string) at path "_id" for model "posts"
     at SchemaObjectId.cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schema/objectId.js:251:11)
     at SchemaType.applySetters (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1255:12)
     at SchemaType.castForQuery (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1673:17)
@@ -136,77 +14,17 @@
     at model.Query._findOne (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:2674:8)
     at model.Query.exec (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:4604:80)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:158:18)
+    at async singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:170:18)
 
-2025-06-25T11:33:54.011Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
+2025-06-27T13:50:45.258Z CastError: Cast to ObjectId failed for value "user" (type string) at path "_id" for model "posts"
+    at SchemaObjectId.cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schema/objectId.js:251:11)
+    at SchemaType.applySetters (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1255:12)
+    at SchemaType.castForQuery (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/schemaType.js:1673:17)
+    at cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/cast.js:390:32)
+    at Query.cast (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:5055:12)
+    at Query._castConditions (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:2351:10)
+    at model.Query._findOne (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:2674:8)
+    at model.Query.exec (/home/hashib/Code/ActualApps/SocialMedia/node_modules/mongoose/lib/query.js:4604:80)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:33:54.023Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:33:58.568Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:33:58.574Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:02.174Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:02.180Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:32.833Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:32.846Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:33.348Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:33.356Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:33.659Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-
-2025-06-25T11:34:33.667Z TypeError: Cannot read properties of undefined (reading 'length')
-    at /home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:147:29
-    at Array.map (<anonymous>)
-    at feed (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:140:31)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async singlePost (/home/hashib/Code/ActualApps/SocialMedia/controllers/post.js:170:18)
 

@@ -21,10 +21,13 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      // Try to access a protected route to check if user is authenticated
-      const response = await api.get('/api/feed');
-      if (response.status === 200) {
+      // Check authentication
+      const feedResponse = await api.get('/api/feed');
+      if (feedResponse.status === 200) {
         setIsAuthenticated(true);
+        // Fetch user info
+        const userResponse = await api.get('/api/profile');
+        setUser(userResponse.data);
       }
     } catch (error) {
       setIsAuthenticated(false);
