@@ -33,11 +33,9 @@ const getOrCreateConversation = async (userA, userB) => {
     return conversation;
   } catch (error) {
     logging(error);
-    return res
-      .status(500)
-      .json({
-        message: 'Internal server error while getting or creating conversation',
-      });
+    return res.status(500).json({
+      message: 'Internal server error while getting or creating conversation',
+    });
   }
 };
 
@@ -58,7 +56,7 @@ const conversation = async (req, res) => {
     })
       .populate('sender', 'username profilePicture')
       .populate('recipient', 'username profilePicture')
-      .sort({ sentAt: 1 });
+      .sort({ sentAt: -1 });
 
     res.json({
       success: true,

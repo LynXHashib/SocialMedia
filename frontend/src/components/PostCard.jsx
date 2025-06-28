@@ -62,7 +62,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
       setIsDisliking(false);
     }
   };
-
+  const hasLiked = post.likedby.indexOf(post.user) === -1;
   return (
     <article className='post-card'>
       <div className='post-header'>
@@ -121,7 +121,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
             <button
               onClick={handleLike}
               disabled={isLiking}
-              className='action-btn like-btn'
+              className={`action-btn like-btn${!hasLiked ? ' liked-glow' : ''}`}
             >
               {isLiking ? <div className='spinner small'></div> : '👍'} Like
             </button>
@@ -298,6 +298,31 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
           border-color: #f59e0b;
           color: #f59e0b;
           background: #fffbeb;
+        }
+          .liked-glow {
+          box-shadow: 0 0 12px 2px #10b981, 0 0 4px 1px #34d399 !important;
+          border-color: #10b981 !important;
+          background: #ecfdf5 !important;
+          color: #065f46 !important;
+        }
+        .like-btn.liked-glow {
+          background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%) !important;
+          border-color: #16a34a !important;
+          color: #fff !important;
+          box-shadow: 0 0 12px 2px #22c55e55, 0 0 4px 1px #4ade8055;
+          font-weight: 600;
+          transition: 
+          background 0.2s,
+          border-color 0.2s,
+          color 0.2s,
+          box-shadow 0.2s;
+          opacity: 1;
+        }
+        .dislike-btn.liked-glow {
+          border-color: #f59e0b !important;
+          background: #f59e0b !important;
+          color: #fff !important;
+          box-shadow: 0 0 8px 2px #f59e0b55;
         }
 
         .comment-btn:hover {

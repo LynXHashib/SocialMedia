@@ -28,7 +28,11 @@ const Navbar = () => {
   return (
     <nav className='navbar'>
       <div className='navbar-container'>
-        <Link to='/' className='navbar-brand' onClick={handleMenuClose}>
+        <Link
+          to={isAuthenticated ? '/feed' : '/'}
+          className='navbar-brand'
+          onClick={handleMenuClose}
+        >
           <img
             src={logo}
             alt='Logo'

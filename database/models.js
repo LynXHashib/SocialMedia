@@ -95,17 +95,17 @@ const commentSchema = new mongoose.Schema({
 });
 const messageSchema = new mongoose.Schema({
   conversationId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: ObjectId,
     ref: 'conversations',
     required: true,
   },
   sender: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: ObjectId,
     ref: 'users',
     required: true,
   },
   recipient: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: ObjectId,
     ref: 'users',
     required: true,
   },
@@ -125,13 +125,13 @@ const messageSchema = new mongoose.Schema({
 const conversationSchema = new mongoose.Schema({
   participants: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'users',
       required: true,
     },
   ],
   lastMessage: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: ObjectId,
     ref: 'messages',
   },
   updatedAt: {

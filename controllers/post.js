@@ -146,11 +146,14 @@ const feed = async (req, res) => {
       commentCountMap[c._id.toString()] = c.count;
     });
     const postData = allPosts.map((el) => ({
+      user: req.session.user._id,
       id: el._id,
       author: el.createdby.name,
       date: el.date,
       title: el.title,
       description: el.description,
+      likedby: el.likedby,
+      dislikedby: el.dislikedby,
       likes: el.likedby.length,
       dislikes: el.dislikedby.length,
       comments: commentCountMap[el._id.toString()] || 0,
@@ -186,6 +189,8 @@ const singlePost = async (req, res) => {
       image: post.image,
       title: post.title,
       description: post.description,
+      likedby: post.likedby,
+      dislikedby: post.dislikedby,
       likes: post.likedby.length || 0,
       dislikes: post.dislikedby.length || 0,
       author: post.createdby.name,

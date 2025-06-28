@@ -8,7 +8,7 @@ const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
   withCredentials: true,
 });
 
-const Conversation = () => {
+function Conversation() {
   const { id: otherUserId } = useParams();
   const { user, loading } = useAuth();
   const myUserId = user._id;
@@ -71,108 +71,137 @@ const Conversation = () => {
   };
 
   return (
-    <div
-      className='conversation-page'
-      style={{
-        maxWidth: 600,
-        margin: '0 auto',
-        background: '#fff',
-        borderRadius: 12,
-        boxShadow: '0 2px 8px #eee',
-        minHeight: 400,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '70vh',
-      }}
-    >
-      <div style={{ flex: 1, overflowY: 'auto', padding: 16 }}>
-        {messages.map((msg, i) => {
-          // Support both string and object for sender
-          const senderId =
-            typeof msg.sender === 'object'
-              ? msg.sender._id || msg.sender.id
-              : msg.sender;
-          const isMine = String(senderId) === String(myUserId);
-
-          return (
-            <div
-              key={msg._id || i}
-              style={{
-                textAlign: isMine ? 'right' : 'left',
-                margin: '8px 0',
-              }}
-            >
-              <span
-                style={{
-                  display: 'inline-block',
-                  background: isMine ? '#3b82f6' : '#e5e7eb',
-                  color: isMine ? 'white' : '#222',
-                  borderRadius: 16,
-                  padding: '8px 16px',
-                  maxWidth: '70%',
-                  wordBreak: 'break-word',
-                }}
-              >
-                {msg.text}
-              </span>
-            </div>
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </div>
+    <>
+      <style>
+        {`
+          @media (max-width: 600px) {
+            .conversation-page {
+              max-width: 100vw !important;
+              min-height: 100vh !important;
+              border-radius: 0 !important;
+              box-shadow: none !important;
+              padding: 0 !important;
+            }
+            .conversation-input-row {
+              flex-direction: column !important;
+              gap: 8px !important;
+            }
+            .conversation-input-row input {
+              margin-right: 0 !important;
+              width: 100% !important;
+            }
+            .conversation-input-row button {
+              width: 100% !important;
+              border-radius: 12px !important;
+              padding: 12px 0 !important;
+            }
+          }
+        `}
+      </style>
       <div
+        className='conversation-page'
         style={{
+          maxWidth: 600,
+          margin: '0 auto',
+          background: '#fff',
+          borderRadius: 12,
+          boxShadow: '0 2px 8px #eee',
+          minHeight: 400,
           display: 'flex',
-          padding: 8,
-          borderTop: '1px solid #eee',
-          background: '#fafbfc',
+          flexDirection: 'column',
+          height: '70vh',
         }}
       >
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+        <div style={{ flex: 1, overflowY: 'auto', padding: 16 }}>
+          {messages.map((msg, i) => {
+            // Support both string and object for sender
+            const senderId =
+              typeof msg.sender === 'object'
+                ? msg.sender._id || msg.sender.id
+                : msg.sender;
+            const isMine = String(senderId) === String(myUserId);
+
+            return (
+              <div
+                key={msg._id || i}
+                style={{
+                  textAlign: isMine ? 'right' : 'left',
+                  margin: '8px 0',
+                }}
+              >
+                <span
+                  style={{
+                    display: 'inline-block',
+                    background: isMine ? '#3b82f6' : '#e5e7eb',
+                    color: isMine ? 'white' : '#222',
+                    borderRadius: 16,
+                    padding: '8px 16px',
+                    maxWidth: '70%',
+                    wordBreak: 'break-word',
+                  }}
+                >
+                  {msg.text}
+                </span>
+              </div>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+        <div
+          className='conversation-input-row'
           style={{
-            flex: 1,
-            borderRadius: 20,
-            border: '1px solid #d1d5db',
-            padding: '10px 16px',
-            fontSize: 16,
-            outline: 'none',
-            background: '#f3f4f6',
-            marginRight: 8,
-            transition: 'border 0.2s',
-          }}
-          placeholder='Type a message...'
-        />
-        <button
-          onClick={sendMessage}
-          style={{
-            background: '#3b82f6',
-            color: 'white',
-            border: 'none',
-            borderRadius: 20,
-            padding: '0 20px',
-            fontSize: 18,
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'background 0.2s',
             display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            boxShadow: '0 2px 8px #e0e7ef33',
+            padding: 8,
+            borderTop: '1px solid #eee',
+            background: '#fafbfc',
           }}
-          onMouseOver={(e) => (e.currentTarget.style.background = '#2563eb')}
-          onMouseOut={(e) => (e.currentTarget.style.background = '#3b82f6')}
         >
-          <span>Send</span>
-          <span role='img' aria-label='send'>
-            ✈️
-          </span>
-        </button>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+            style={{
+              flex: 1,
+              borderRadius: 20,
+              border: '1px solid #d1d5db',
+              padding: '10px 16px',
+              fontSize: 16,
+              outline: 'none',
+              background: '#f3f4f6',
+              marginRight: 8,
+              transition: 'border 0.2s',
+            }}
+            placeholder='Type a message...'
+          />
+          <button
+            onClick={sendMessage}
+            style={{
+              background: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: 20,
+              padding: '0 20px',
+              fontSize: 18,
+              fontWeight: 500,
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              boxShadow: '0 2px 8px #e0e7ef33',
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.background = '#2563eb')}
+            onMouseOut={(e) => (e.currentTarget.style.background = '#3b82f6')}
+          >
+            <span>Send</span>
+            <span role='img' aria-label='send'>
+              ✈️
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
 export default Conversation;
