@@ -186,6 +186,7 @@ const singlePost = async (req, res) => {
       comment: el.comment,
     }));
     return res.status(200).json({
+      user: req.session.user._id,
       image: post.image,
       title: post.title,
       description: post.description,

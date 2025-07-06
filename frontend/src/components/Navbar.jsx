@@ -170,7 +170,7 @@ const Navbar = () => {
           background: none;
           border: none;
           cursor: pointer;
-          z-index: 200;
+          z-index: 2000; /* <-- Increase this value */
         }
         .navbar-toggle span {
           display: block;

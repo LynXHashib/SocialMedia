@@ -63,6 +63,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
     }
   };
   const hasLiked = post.likedby.indexOf(post.user) === -1;
+  const hasDisLiked = post.dislikedby.indexOf(post.user) === -1;
   return (
     <article className='post-card'>
       <div className='post-header'>
@@ -128,7 +129,9 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
             <button
               onClick={handleDislike}
               disabled={isDisliking}
-              className='action-btn dislike-btn'
+              className={`action-btn dislike-btn${
+                !hasDisLiked ? ' liked-glow' : ''
+              }`}
             >
               {isDisliking ? <div className='spinner small'></div> : '👎'}{' '}
               Dislike
@@ -322,7 +325,7 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
           border-color: #f59e0b !important;
           background: #f59e0b !important;
           color: #fff !important;
-          box-shadow: 0 0 8px 2px #f59e0b55;
+          box-shadow: 0 0 8px 2px rgba(245, 172, 76, 0.91) !important;
         }
 
         .comment-btn:hover {

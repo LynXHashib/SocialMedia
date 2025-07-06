@@ -53,7 +53,7 @@ A modern social media application built with the MERN stack, featuring real-time
 
 ### 🚧 Coming Soon
 
-- [ ] **Live Chat with Socket.IO** - Real-time messaging between users
+- [*] **Live Chat with Socket.IO** - Real-time messaging between users \\ Update: It's there but not optimized enough yet.
 - [ ] **Push Notifications** - Browser notifications for important updates
 - [ ] **Media Upload** - Image and video sharing capabilities
 - [ ] **Dark Mode** - Theme customization options

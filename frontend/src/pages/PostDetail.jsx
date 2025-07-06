@@ -104,7 +104,8 @@ const PostDetail = () => {
       setIsDisliking(false);
     }
   };
-
+  const hasLiked = post.likedby.indexOf(post.user) === -1;
+  const hasDisLiked = post.dislikedby.indexOf(post.user) === -1;
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
@@ -269,7 +270,9 @@ const PostDetail = () => {
               <button
                 onClick={handleLike}
                 disabled={isLiking}
-                className='engagement-btn like-btn'
+                className={`engagement-btn like-btn${
+                  hasLiked ? ' liked-glow' : ''
+                }`}
                 aria-label='Like this post'
               >
                 {isLiking ? <div className='spinner small'></div> : '👍'} Like
@@ -277,7 +280,9 @@ const PostDetail = () => {
               <button
                 onClick={handleDislike}
                 disabled={isDisliking}
-                className='engagement-btn dislike-btn'
+                className={`engagement-btn dislike-btn${
+                  hasDisLiked ? ' liked-glow' : ''
+                }`}
                 aria-label='Dislike this post'
               >
                 {isDisliking ? <div className='spinner small'></div> : '👎'}{' '}
@@ -513,7 +518,31 @@ const PostDetail = () => {
           color: #10b981;
           background: #ecfdf5;
         }
-
+        .liked-glow {
+    box-shadow: 0 0 12px 2px #10b981, 0 0 4px 1px #34d399 !important;
+    border-color: #10b981 !important;
+    background: #ecfdf5 !important;
+    color: #065f46 !important;
+  }
+  .like-btn.liked-glow {
+    background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%) !important;
+    border-color: #16a34a !important;
+    color: #fff !important;
+    box-shadow: 0 0 12px 2px #22c55e55, 0 0 4px 1px #4ade8055;
+    font-weight: 600;
+    transition: 
+      background 0.2s,
+      border-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s;
+    opacity: 1;
+  }
+  .dislike-btn.liked-glow {
+    border-color: #f59e0b !important;
+    background: #f59e0b !important;
+    color: #fff !important;
+    box-shadow: 0 0 8px 2px rgba(245, 172, 76, 0.91) !important;
+  }
         .dislike-btn:hover:not(:disabled) {
           border-color: #f59e0b;
           color: #f59e0b;
