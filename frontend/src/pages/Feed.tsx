@@ -1,12 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import api from '../api';
-import PostCard from '../components/PostCard';
-import LoadingSpinner from '../components/LoadingSpinner';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api.js";
+import PostCard from "../components/PostCard.js";
+import LoadingSpinner from "../components/LoadingSpinner.js";
 
 const Feed = () => {
-  const [posts, setPosts] = useState([]);
+  interface Post {
+    _id: string;
+    title: string;
+    description: string;
+    date: string;
+    image?: string;
+    likes: number;
+    dislikes: number;
+    comments: any[];
+    likedby: string[];
+    dislikedby: string[];
+  }
+
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -22,13 +35,13 @@ const Feed = () => {
         setLoading(true);
       }
 
-      const response = await api.get('/api/feed');
+      const response = await api.get("/api/feed");
       if (response.status === 200) {
         setPosts(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch posts:', error);
-      toast.error('Failed to load posts');
+      console.error("Failed to fetch posts:", error);
+      toast.error("Failed to load posts");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -40,53 +53,53 @@ const Feed = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner text='Loading your feed...' />;
+    return <LoadingSpinner text="Loading your feed..." />;
   }
 
   return (
-    <div className='feed-page'>
-      <div className='feed-header'>
-        <div className='feed-title-section'>
-          <h1 className='feed-title'>Your Feed</h1>
-          <p className='feed-subtitle'>
+    <div className="feed-page">
+      <div className="feed-header">
+        <div className="feed-title-section">
+          <h1 className="feed-title">Your Feed</h1>
+          <p className="feed-subtitle">
             Discover what's happening in your community
           </p>
         </div>
 
-        <div className='feed-actions'>
+        <div className="feed-actions">
           <button
             onClick={handleRefresh}
             disabled={refreshing}
-            className='btn btn-outline refresh-btn'
+            className="btn btn-outline refresh-btn"
           >
             {refreshing ? (
               <>
-                <div className='spinner small'></div>
+                <div className="spinner small"></div>
                 Refreshing...
               </>
             ) : (
               <>🔄 Refresh</>
             )}
           </button>
-          <Link to='/create-post' className='btn btn-primary'>
+          <Link to="/create-post" className="btn btn-primary">
             ✏️ Create Post
           </Link>
         </div>
       </div>
 
       {posts.length === 0 ? (
-        <div className='empty-feed'>
-          <div className='empty-feed-icon'>📝</div>
-          <h3 className='empty-feed-title'>No posts yet</h3>
-          <p className='empty-feed-message'>
+        <div className="empty-feed">
+          <div className="empty-feed-icon">📝</div>
+          <h3 className="empty-feed-title">No posts yet</h3>
+          <p className="empty-feed-message">
             Be the first to share something with the community!
           </p>
-          <Link to='/create-post' className='btn btn-primary'>
+          <Link to="/create-post" className="btn btn-primary">
             Create Your First Post
           </Link>
         </div>
       ) : (
-        <div className='posts-grid'>
+        <div className="posts-grid">
           {posts.map((post, index) => (
             <PostCard
               key={post._id || index}

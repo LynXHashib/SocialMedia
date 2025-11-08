@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const postSchema = new mongoose.Schema({
   title: {
@@ -139,7 +139,7 @@ const conversationSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-module.exports = {
+export {
   postSchema,
   userSchema,
   commentSchema,

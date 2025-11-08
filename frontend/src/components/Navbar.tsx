@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../auth/auth';
-import { toast } from 'react-toastify';
-import logo from '/logo.svg';
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../auth/auth.js";
+import { toast } from "react-toastify";
+import logo from "/logo.svg";
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -13,10 +13,10 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success('Logged out successfully');
-      navigate('/');
+      toast.success("Logged out successfully");
+      navigate("/");
     } catch (error) {
-      toast.error('Logout failed');
+      toast.error("Logout failed");
     }
   };
 
@@ -26,26 +26,26 @@ const Navbar = () => {
   const handleMenuClose = () => setMenuOpen(false);
 
   return (
-    <nav className='navbar'>
-      <div className='navbar-container'>
+    <nav className="navbar">
+      <div className="navbar-container">
         <Link
-          to={isAuthenticated ? '/feed' : '/'}
-          className='navbar-brand'
+          to={isAuthenticated ? "/feed" : "/"}
+          className="navbar-brand"
           onClick={handleMenuClose}
         >
           <img
             src={logo}
-            alt='Logo'
-            style={{ height: '60px', width: '100px' }}
+            alt="Logo"
+            style={{ height: "60px", width: "100px" }}
           />
           <h1>SocialMedia</h1>
         </Link>
 
         {/* Hamburger Icon */}
         <button
-          className={`navbar-toggle${menuOpen ? ' open' : ''}`}
+          className={`navbar-toggle${menuOpen ? " open" : ""}`}
           onClick={handleMenuToggle}
-          aria-label='Toggle menu'
+          aria-label="Toggle menu"
         >
           <span />
           <span />
@@ -53,38 +53,38 @@ const Navbar = () => {
         </button>
 
         {/* Responsive Menu */}
-        <div className={`navbar-menu${menuOpen ? ' open' : ''}`}>
+        <div className={`navbar-menu${menuOpen ? " open" : ""}`}>
           {isAuthenticated ? (
             <>
               <Link
-                to='/feed'
-                className={`navbar-link ${isActive('/feed') ? 'active' : ''}`}
+                to="/feed"
+                className={`navbar-link ${isActive("/feed") ? "active" : ""}`}
                 onClick={handleMenuClose}
               >
                 Feed
               </Link>
               <Link
-                to='/create-post'
+                to="/create-post"
                 className={`navbar-link ${
-                  isActive('/create-post') ? 'active' : ''
+                  isActive("/create-post") ? "active" : ""
                 }`}
                 onClick={handleMenuClose}
               >
                 Create Post
               </Link>
               <Link
-                to='/profile'
+                to="/profile"
                 className={`navbar-link ${
-                  isActive('/profile') ? 'active' : ''
+                  isActive("/profile") ? "active" : ""
                 }`}
                 onClick={handleMenuClose}
               >
                 Profile
               </Link>
               <Link
-                to='/messages'
+                to="/messages"
                 className={`navbar-link ${
-                  isActive('/messages') ? 'active' : ''
+                  isActive("/messages") ? "active" : ""
                 }`}
                 onClick={handleMenuClose}
               >
@@ -95,7 +95,7 @@ const Navbar = () => {
                   handleLogout();
                   handleMenuClose();
                 }}
-                className='btn btn-outline'
+                className="btn btn-outline"
               >
                 Logout
               </button>
@@ -103,15 +103,15 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                to='/login'
-                className={`navbar-link ${isActive('/login') ? 'active' : ''}`}
+                to="/login"
+                className={`navbar-link ${isActive("/login") ? "active" : ""}`}
                 onClick={handleMenuClose}
               >
                 Login
               </Link>
               <Link
-                to='/register'
-                className='btn btn-primary'
+                to="/register"
+                className="btn btn-primary"
                 onClick={handleMenuClose}
               >
                 Sign Up

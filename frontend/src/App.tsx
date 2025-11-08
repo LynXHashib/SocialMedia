@@ -1,39 +1,39 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import { AuthProvider } from './auth/auth';
-import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Feed from './pages/Feed';
-import CreatePost from './pages/CreatePost';
-import PostDetail from './pages/PostDetail';
-import Profile from './pages/Profile';
-import Verification from './pages/Verification';
-import Messages from './pages/Messages';
-import Conversation from './pages/Conversation';
-import './App.css';
+import { AuthProvider } from "./auth/auth.js";
+import Navbar from "./components/Navbar.js";
+import ProtectedRoute from "./components/ProtectedRoute.js";
+import Home from "./pages/Home.js";
+import Login from "./pages/Login.js";
+import Register from "./pages/Register.js";
+import Feed from "./pages/Feed.js";
+import CreatePost from "./pages/CreatePost.js";
+import PostDetail from "./pages/PostDetail.js";
+import Profile from "./pages/Profile.js";
+import Verification from "./pages/Verification.js";
+import Messages from "./pages/Messages.js";
+import Conversation from "./pages/Conversation.js";
+import "./App.css";
 function App() {
   return (
     <AuthProvider>
-      <Router basename='/SocialMedia'>
-        <div className='App'>
+      <Router basename="/SocialMedia">
+        <div className="App">
           <Navbar />
           <main
-            className='container'
-            style={{ paddingTop: '2rem', paddingBottom: '2rem' }}
+            className="container"
+            style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
           >
             <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/verification' element={<Verification />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/verification" element={<Verification />} />
               <Route
-                path='/feed'
+                path="/feed"
                 element={
                   <ProtectedRoute>
                     <Feed />
@@ -41,7 +41,7 @@ function App() {
                 }
               />
               <Route
-                path='/create-post'
+                path="/create-post"
                 element={
                   <ProtectedRoute>
                     <CreatePost />
@@ -49,7 +49,7 @@ function App() {
                 }
               />
               <Route
-                path='/post/:id'
+                path="/post/:id"
                 element={
                   <ProtectedRoute>
                     <PostDetail />
@@ -57,7 +57,7 @@ function App() {
                 }
               />
               <Route
-                path='/profile'
+                path="/profile"
                 element={
                   <ProtectedRoute>
                     <Profile />
@@ -65,7 +65,7 @@ function App() {
                 }
               />
               <Route
-                path='/messages'
+                path="/messages"
                 element={
                   <ProtectedRoute>
                     <Messages />
@@ -73,7 +73,7 @@ function App() {
                 }
               />
               <Route
-                path='/conversation/:id'
+                path="/conversation/:id"
                 element={
                   <ProtectedRoute>
                     <Conversation />
@@ -83,7 +83,7 @@ function App() {
             </Routes>
           </main>
           <ToastContainer
-            position='top-right'
+            position="top-right"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}

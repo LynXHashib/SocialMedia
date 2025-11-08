@@ -1,57 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../auth/auth';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../auth/auth.js";
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className='home-page'>
-      <div className='hero-section'>
-        <div className='hero-content'>
-          <h1 className='hero-title'>
+    <div className="home-page">
+      <div className="hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">
             Connect with friends and the world around you
           </h1>
-          <p className='hero-description'>
+          <p className="hero-description">
             Share your thoughts, discover amazing content, and build meaningful
             connections in our vibrant social media community.
           </p>
 
           {!isAuthenticated ? (
-            <div className='hero-actions'>
-              <Link to='/register' className='btn btn-primary hero-btn'>
+            <div className="hero-actions">
+              <Link to="/register" className="btn btn-primary hero-btn">
                 Get Started
               </Link>
-              <Link to='/login' className='btn btn-outline hero-btn'>
+              <Link to="/login" className="btn btn-outline hero-btn">
                 Sign In
               </Link>
             </div>
           ) : (
-            <div className='hero-actions'>
-              <Link to='/feed' className='btn btn-primary hero-btn'>
+            <div className="hero-actions">
+              <Link to="/feed" className="btn btn-primary hero-btn">
                 View Feed
               </Link>
-              <Link to='/create-post' className='btn btn-outline hero-btn'>
+              <Link to="/create-post" className="btn btn-outline hero-btn">
                 Create Post
               </Link>
             </div>
           )}
         </div>
 
-        <div className='hero-image'>
-          <div className='feature-cards'>
-            <div className='feature-card'>
-              <div className='feature-icon'>📱</div>
+        <div className="hero-image">
+          <div className="feature-cards">
+            <div className="feature-card">
+              <div className="feature-icon">📱</div>
               <h3>Share</h3>
               <p>Post photos, thoughts, and moments</p>
             </div>
-            <div className='feature-card'>
-              <div className='feature-icon'>💬</div>
+            <div className="feature-card">
+              <div className="feature-icon">💬</div>
               <h3>Connect</h3>
               <p>Comment and engage with others</p>
             </div>
-            <div className='feature-card'>
-              <div className='feature-icon'>❤️</div>
+            <div className="feature-card">
+              <div className="feature-icon">❤️</div>
               <h3>Discover</h3>
               <p>Find content you love</p>
             </div>
@@ -59,28 +59,28 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='features-section'>
-        <div className='container'>
-          <h2 className='section-title'>Why Choose Our Platform?</h2>
-          <div className='features-grid'>
-            <div className='feature-item'>
-              <div className='feature-icon-large'>🔒</div>
+      <div className="features-section">
+        <div className="container">
+          <h2 className="section-title">Why Choose Our Platform?</h2>
+          <div className="features-grid">
+            <div className="feature-item">
+              <div className="feature-icon-large">🔒</div>
               <h3>Secure & Private</h3>
               <p>
                 Your data is protected with enterprise-grade security and
                 privacy controls.
               </p>
             </div>
-            <div className='feature-item'>
-              <div className='feature-icon-large'>🌟</div>
+            <div className="feature-item">
+              <div className="feature-icon-large">🌟</div>
               <h3>Engaging Experience</h3>
               <p>
                 Beautiful, intuitive interface designed for meaningful social
                 interactions.
               </p>
             </div>
-            <div className='feature-item'>
-              <div className='feature-icon-large'>🚀</div>
+            <div className="feature-item">
+              <div className="feature-icon-large">🚀</div>
               <h3>Fast & Reliable</h3>
               <p>
                 Lightning-fast performance with 99.9% uptime for uninterrupted

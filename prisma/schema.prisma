@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  email         String    @unique
+  password      String
+  bio           String?   @db.VarChar(100)
+  gender        Gender
+  verified      Boolean   @default(false)
+  verifytoken   String?
+  postcount     Int       @default(0)
+  securityLevel Int       @default(5)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  posts         Post[]         @relation("UserPosts")
+  comments      Comment[]      @relation("UserComments")
+  likes         Like[]         @relation("UserLikes")
+  followers     Follow[]       @relation("Following")
+  following     Follow[]       @relation("Followers")
+
+  @@map("users")
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  description String    @db.Text
+  image       String    @default("")
+  createdById String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  creator     User      @relation("UserPosts", fields: [createdById], references: [id], onDelete: Cascade)
+  comments    Comment[] @relation("PostComments")
+  likes       Like[]    @relation("PostLikes")
+
+  @@index([createdById])
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  comment   String   @db.Text
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation("PostComments", fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([postId])
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  isLike    Boolean  // true = like, false = dislike
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation("UserLikes", fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation("PostLikes", fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+  @@map("likes")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  follower    User     @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("follows")
+}
+
+enum Gender {
+  Male
+  Female
+}

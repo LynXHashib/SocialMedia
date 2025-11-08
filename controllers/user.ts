@@ -1,11 +1,8 @@
-const { default: mongoose } = require('mongoose');
-const { userSchema } = require('../database/models');
-const { logging, transporter } = require('../modules/app');
-const crypto = require('crypto');
-const { all } = require('axios');
+import { logging, transporter, prisma } from '../lib/utils';
+import crypto from 'crypto';
+import { Request, Response } from 'express'
 //   CONSTANTS
-
-const sendMail = async (email, uniqueToken) => {
+const sendMail = async (email: any, uniqueToken: String) => {
   await transporter.sendMail({
     from: '"Email Verification"<smedianode@gmail.com>',
     to: email,
@@ -74,11 +71,9 @@ const sendMail = async (email, uniqueToken) => {
   });
 };
 
-const users = mongoose.model('users', userSchema);
-
 // AUTHENTICATION
 
-const register = async (req, res) => {
+const register = async (req: Request, res: Response) => {
   try {
     const { name, password, email, gender } = req.body;
     if (!name || !password || !email || !gender) {
@@ -86,13 +81,13 @@ const register = async (req, res) => {
         message: 'Wrong Inputs',
       });
     }
-    const checkExistingEmail = await users.findOne({ email: `${email}` });
+    const checkExistingEmail = await prisma.user.findFirst({ where: { email: `${email}` } });
     if (!!checkExistingEmail) {
       return res.json({
         message: 'Email Already Exists',
       });
     }
-    const checkExistingUser = await users.findOne({ name: `${name}` });
+    const checkExistingUser = await prisma.user.findFirst({ where: { name: `${name}` } });
     if (!!checkExistingUser) {
       return res.json({
         message: 'Username Already Taken',
@@ -111,7 +106,6 @@ const register = async (req, res) => {
       gender: gender,
       verifytoken: uniqueToken,
     });
-    console.log(newUser);
     req.session.user = newUser;
     return res.status(201).json({
       message: `User:${name} created successfully. You can't access feed until you verify your email`,
@@ -322,7 +316,7 @@ const followUser = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   register,
   login,
   logout,

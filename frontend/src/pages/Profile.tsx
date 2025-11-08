@@ -1,17 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import api from '../api';
-import LoadingSpinner from '../components/LoadingSpinner';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api.js";
+import LoadingSpinner from "../components/LoadingSpinner.js";
+
+interface Post {
+  title: string;
+  date: string;
+  description: string;
+  image?: string;
+  likes: number;
+  dislikes: number;
+  comments: any[];
+}
+
+interface UserStats {
+  postCount: number;
+  followers: number;
+  verified: boolean;
+  name: string;
+}
 
 const Profile = () => {
-  const [userStats, setUserStats] = useState({
+  const [userStats, setUserStats] = useState<UserStats>({
     postCount: 0,
     followers: 0,
     verified: false,
-    name: '',
+    name: "",
   });
-  const [recentPosts, setRecentPosts] = useState([]);
+  const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,8 +39,8 @@ const Profile = () => {
     try {
       setLoading(true);
 
-      const profileResponse = await api.get('/api/profile');
-      const feedResponse = await api.get('/api/feed');
+      const profileResponse = await api.get("/api/profile");
+      const feedResponse = await api.get("/api/feed");
       if (feedResponse.status === 200 && profileResponse.status == 200) {
         const allPosts = feedResponse.data;
         const profile = profileResponse.data;
@@ -38,111 +55,111 @@ const Profile = () => {
         });
       }
     } catch (error) {
-      console.error('Failed to fetch user data:', error);
-      toast.error('Failed to load profile data');
+      console.error("Failed to fetch user data:", error);
+      toast.error("Failed to load profile data");
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <LoadingSpinner text='Loading your profile...' />;
+    return <LoadingSpinner text="Loading your profile..." />;
   }
 
   return (
-    <div className='profile-page'>
-      <div className='profile-container'>
-        <div className='profile-header'>
-          <div className='profile-cover'>
-            <div className='cover-gradient'></div>
+    <div className="profile-page">
+      <div className="profile-container">
+        <div className="profile-header">
+          <div className="profile-cover">
+            <div className="cover-gradient"></div>
           </div>
 
-          <div className='profile-info'>
-            <div className='profile-avatar-section'>
-              <div className='profile-avatar'>
-                <span className='avatar-text'>ME</span>
+          <div className="profile-info">
+            <div className="profile-avatar-section">
+              <div className="profile-avatar">
+                <span className="avatar-text">ME</span>
               </div>
-              <div className='profile-details'>
-                <h1 className='profile-name'>
+              <div className="profile-details">
+                <h1 className="profile-name">
                   {userStats.name}
                   {userStats.verified && (
-                    <span className='verified-badge' title='Verified Account'>
+                    <span className="verified-badge" title="Verified Account">
                       ✓
                     </span>
                   )}
                 </h1>
-                <p className='profile-bio'>
+                <p className="profile-bio">
                   Welcome to your social media profile! This is where you can
                   see your activity and manage your account.
                 </p>
               </div>
             </div>
 
-            <div className='profile-stats'>
-              <div className='stat-item'>
-                <div className='stat-number'>{userStats.postCount}</div>
-                <div className='stat-label'>Posts</div>
+            <div className="profile-stats">
+              <div className="stat-item">
+                <div className="stat-number">{userStats.postCount}</div>
+                <div className="stat-label">Posts</div>
               </div>
-              <div className='stat-item'>
-                <div className='stat-number'>{userStats.followers}</div>
-                <div className='stat-label'>Followers</div>
+              <div className="stat-item">
+                <div className="stat-number">{userStats.followers}</div>
+                <div className="stat-label">Followers</div>
               </div>
-              <div className='stat-item'>
-                <div className='stat-number'>42</div>
-                <div className='stat-label'>Following</div>
+              <div className="stat-item">
+                <div className="stat-number">42</div>
+                <div className="stat-label">Following</div>
               </div>
             </div>
 
-            <div className='profile-actions'>
-              <Link to='/create-post' className='btn btn-primary'>
+            <div className="profile-actions">
+              <Link to="/create-post" className="btn btn-primary">
                 Create New Post
               </Link>
-              <button className='btn btn-outline' onClick={fetchUserData}>
+              <button className="btn btn-outline" onClick={fetchUserData}>
                 Refresh Profile
               </button>
             </div>
           </div>
         </div>
 
-        <div className='profile-content'>
-          <div className='content-tabs'>
-            <div className='tab-item active'>Recent Posts</div>
+        <div className="profile-content">
+          <div className="content-tabs">
+            <div className="tab-item active">Recent Posts</div>
           </div>
 
-          <div className='posts-section'>
+          <div className="posts-section">
             {recentPosts.length === 0 ? (
-              <div className='empty-posts'>
-                <div className='empty-icon'>📝</div>
+              <div className="empty-posts">
+                <div className="empty-icon">📝</div>
                 <h3>No posts yet</h3>
                 <p>Start sharing your thoughts with the community!</p>
-                <Link to='/create-post' className='btn btn-primary'>
+                <Link to="/create-post" className="btn btn-primary">
                   Create Your First Post
                 </Link>
               </div>
             ) : (
-              <div className='posts-grid'>
+              <div className="posts-grid">
                 {recentPosts.map((post, index) => (
-                  <div key={index} className='post-preview'>
-                    <div className='post-preview-header'>
-                      <h3 className='post-preview-title'>{post.title}</h3>
-                      <span className='post-preview-date'>
+                  <div key={index} className="post-preview">
+                    <div className="post-preview-header">
+                      <h3 className="post-preview-title">{post.title}</h3>
+                      <span className="post-preview-date">
                         {new Date(post.date).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className='post-preview-description'>
+                    <p className="post-preview-description">
                       {post.description.length > 100
                         ? `${post.description.substring(0, 100)}...`
                         : post.description}
                     </p>
                     {post.image && (
-                      <div className='post-preview-image'>
+                      <div className="post-preview-image">
                         <img src={post.image} alt={post.title} />
                       </div>
                     )}
-                    <div className='post-preview-footer'>
-                      <span className='post-stat'>👍 {post.likes || 0}</span>
-                      <span className='post-stat'>👎 {post.dislikes || 0}</span>
-                      <span className='post-stat'>
+                    <div className="post-preview-footer">
+                      <span className="post-stat">👍 {post.likes || 0}</span>
+                      <span className="post-stat">👎 {post.dislikes || 0}</span>
+                      <span className="post-stat">
                         💬 {post.comments?.length || 0}
                       </span>
                     </div>

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import api from '../api';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api.js";
 
 const PostCard = ({ post, onPostUpdate, showActions = true }) => {
   const [isLiking, setIsLiking] = useState(false);
   const [isDisliking, setIsDisliking] = useState(false);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
   const handleSinglePost = async () => {
@@ -30,14 +30,14 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
     try {
       const response = await api.post(`/api/likepost/${post.id}`);
       if (response.status === 201) {
-        toast.success('Post liked!');
+        toast.success("Post liked!");
         if (onPostUpdate) {
           onPostUpdate();
         }
       }
     } catch (error) {
-      toast.error('Failed to like post');
-      console.error('Like error:', error);
+      toast.error("Failed to like post");
+      console.error("Like error:", error);
     } finally {
       setIsLiking(false);
     }
@@ -50,14 +50,14 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
     try {
       const response = await api.post(`/api/dislikepost/${post.id}`);
       if (response.status === 201) {
-        toast.success('Post disliked!');
+        toast.success("Post disliked!");
         if (onPostUpdate) {
           onPostUpdate();
         }
       }
     } catch (error) {
-      toast.error('Failed to dislike post');
-      console.error('Dislike error:', error);
+      toast.error("Failed to dislike post");
+      console.error("Dislike error:", error);
     } finally {
       setIsDisliking(false);
     }
@@ -65,79 +65,79 @@ const PostCard = ({ post, onPostUpdate, showActions = true }) => {
   const hasLiked = post.likedby.indexOf(post.user) === -1;
   const hasDisLiked = post.dislikedby.indexOf(post.user) === -1;
   return (
-    <article className='post-card'>
-      <div className='post-header'>
-        <div className='post-author-info'>
-          <div className='author-avatar'>
-            {post.author ? post.author.charAt(0).toUpperCase() : 'U'}
+    <article className="post-card">
+      <div className="post-header">
+        <div className="post-author-info">
+          <div className="author-avatar">
+            {post.author ? post.author.charAt(0).toUpperCase() : "U"}
           </div>
-          <div className='author-details'>
-            <h3 className='author-name'>{post.author || 'Unknown Author'}</h3>
-            <p className='post-date'>{formatDate(post.date)}</p>
+          <div className="author-details">
+            <h3 className="author-name">{post.author || "Unknown Author"}</h3>
+            <p className="post-date">{formatDate(post.date)}</p>
           </div>
         </div>
       </div>
 
-      <div className='post-content'>
-        <Link style={{ textDecoration: 'none' }} to={`/post/${post.id}`}>
-          <h2 className='post-title' style={{ textDecoration: 'none' }}>
+      <div className="post-content">
+        <Link style={{ textDecoration: "none" }} to={`/post/${post.id}`}>
+          <h2 className="post-title" style={{ textDecoration: "none" }}>
             {post.title}
           </h2>
         </Link>
-        <p className='post-description'>{post.description}</p>
+        <p className="post-description">{post.description}</p>
         <Link to={`/post/${post.id}`}>
           {post.image && (
-            <div className='post-image-container'>
+            <div className="post-image-container">
               <img
                 src={post.image}
                 alt={post.title}
-                className='post-image'
+                className="post-image"
                 onError={(e) => {
-                  e.target.style.display = 'none';
+                  e.target.style.display = "none";
                 }}
               />
             </div>
-          )}{' '}
+          )}{" "}
         </Link>
       </div>
 
       {showActions && (
-        <div className='post-actions'>
-          <div className='post-stats'>
-            <span className='stat-item'>
-              <span className='stat-icon'>👍</span>
-              <span className='stat-count'>{post.likes || 0}</span>
+        <div className="post-actions">
+          <div className="post-stats">
+            <span className="stat-item">
+              <span className="stat-icon">👍</span>
+              <span className="stat-count">{post.likes || 0}</span>
             </span>
-            <span className='stat-item'>
-              <span className='stat-icon'>👎</span>
-              <span className='stat-count'>{post.dislikes || 0}</span>
+            <span className="stat-item">
+              <span className="stat-icon">👎</span>
+              <span className="stat-count">{post.dislikes || 0}</span>
             </span>
-            <span className='stat-item'>
-              <span className='stat-icon'>💬</span>
-              <span className='stat-count'>{post.comments || 0}</span>
+            <span className="stat-item">
+              <span className="stat-icon">💬</span>
+              <span className="stat-count">{post.comments || 0}</span>
             </span>
           </div>
 
-          <div className='action-buttons'>
+          <div className="action-buttons">
             <button
               onClick={handleLike}
               disabled={isLiking}
-              className={`action-btn like-btn${!hasLiked ? ' liked-glow' : ''}`}
+              className={`action-btn like-btn${!hasLiked ? " liked-glow" : ""}`}
             >
-              {isLiking ? <div className='spinner small'></div> : '👍'} Like
+              {isLiking ? <div className="spinner small"></div> : "👍"} Like
             </button>
             <button
               onClick={handleDislike}
               disabled={isDisliking}
               className={`action-btn dislike-btn${
-                !hasDisLiked ? ' liked-glow' : ''
+                !hasDisLiked ? " liked-glow" : ""
               }`}
             >
-              {isDisliking ? <div className='spinner small'></div> : '👎'}{' '}
+              {isDisliking ? <div className="spinner small"></div> : "👎"}{" "}
               Dislike
             </button>
             {post.id && (
-              <Link to={`/post/${post.id}`} className='action-btn comment-btn'>
+              <Link to={`/post/${post.id}`} className="action-btn comment-btn">
                 💬 Comment
               </Link>
             )}

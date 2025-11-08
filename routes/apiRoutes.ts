@@ -1,24 +1,8 @@
 const router = require('express').Router();
 
-const {
-  register,
-  login,
-  logout,
-  followUser,
-  profile,
-  allUsers,
-  searchUser,
-} = require('../controllers/user');
-const {
-  createPost,
-  deletePost,
-  likePost,
-  dislikePost,
-  singlePost,
-  comment,
-  feed,
-} = require('../controllers/post');
-const { conversation } = require('../controllers/messenger');
+import { register, login, logout, followUser, profile, allUsers, searchUser } from '../controllers/user';
+import { createPost, deletePost, likePost, dislikePost, singlePost, comment, feed } from '../controllers/post';
+// import { conversation } from '../controllers/messenger';
 
 // Authentication routes
 //User Routes

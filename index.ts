@@ -1,16 +1,17 @@
 'use strict';
-const express = require('express');
-const { default: mongoose } = require('mongoose');
-const MongoStore = require('connect-mongo');
-const session = require('express-session');
-const dotenv = require('dotenv').config();
-const nodemailer = require('nodemailer');
-const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-const path = require('path');
-const { createServer } = require('http');
-const { Server } = require('socket.io');
+import express from 'express';
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
+import path from 'path';
+import { createServer } from 'http';
+
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth";
+import { Server } from 'socket.io';
+dotenv.config()
 const app = express();
 const http = createServer(app);
 const io = new Server(http, {
@@ -18,7 +19,7 @@ const io = new Server(http, {
     origin: [
       'http://localhost:5001',
       'http://127.0.0.1:5001',
-      process.env.CORS_URL,
+      process.env.CORS_URL!,
       'https://lynxhashib.github.io/SocialMedia',
       'https://lynxhashib.github.io',
     ],
@@ -29,63 +30,41 @@ const io = new Server(http, {
 });
 
 //Schema
-const { messageSchema } = require('./database/models');
+import { messageSchema } from './database/models';
 
-const messages = mongoose.model('messages', messageSchema);
-app.use(
-  cors({
-    origin: [
-      'http://localhost:5001',
-      'http://127.0.0.1:5001',
-      process.env.CORS_URL,
-      'https://lynxhashib.github.io/SocialMedia',
-      'https://lynxhashib.github.io',
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
-
+// const messages = mongoose.model('messages', messageSchema);
+// app.use(
+//   cors({
+//     origin: [
+//       'http://localhost:5001',
+//       'http://127.0.0.1:5001',
+//       process.env.CORS_URL!,
+//       'https://lynxhashib.github.io/SocialMedia',
+//       'https://lynxhashib.github.io',
+//     ],
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//   })
+// );
+app.all("/api/auth/{*access}", toNodeHandler(auth));
 app.use(express.json());
 app.set('trust proxy', 1);
-app.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-    cookie: {
-      secure: process.env.NODE_ENV === 'PRODUCTION',
-      sameSite: process.env.NODE_ENV === 'PRODUCTION' ? 'none' : 'lax',
-      maxAge: 24 * 60 * 60 * 1000,
-    },
-  })
-);
 
-const mongoDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log(`Connected Successfully`);
-  } catch (err) {
-    console.log(err);
-  }
-};
-mongoDB();
 
-// IO
-const { getOrCreateConversation } = require('./controllers/messenger');
+/* // IO
+import { getOrCreateConversation } from './controllers/messenger';
 
-io.on('connection', (socket) => {
+io.on('connection', (socket: any) => {
   console.log('User connected:', socket.id);
 
-  socket.on('register-user', (userId) => {
+  socket.on('register-user', (userId: any) => {
     console.log('User registered:', userId);
     socket.join(userId.toString());
     socket.userId = userId; // Store userId on socket for reference
   });
 
-  socket.on('private-message', async (data) => {
+  socket.on('private-message', async (data: any) => {
     try {
       const { toUserId, fromUserId, message } = data;
 
@@ -153,17 +132,19 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 
-  socket.on('error', (error) => {
+  socket.on('error', (error: string) => {
     console.error('Socket error:', error);
   });
-});
+);
+*/
 
+// AUTENTICATION 
 // ROUTES
 
-const apiRoute = require('./routes/apiRoutes');
-const authRoute = require('./routes/authRoute');
-const { authCheck } = require('./middlewares/app');
-const home = require('./controllers/home');
+import apiRoute from './routes/apiRoutes';
+import authRoute from './routes/authRoute';
+import { authCheck } from './middlewares/app';
+import home from './controllers/home';
 
 //SWAGGER
 app.use(express.static(path.join(__dirname, 'public')));
@@ -176,4 +157,4 @@ app.use('/api', authCheck, apiRoute);
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'URL DO NOT EXIST' });
 });
-module.exports = { app, http, io };
+export { app, http, io };

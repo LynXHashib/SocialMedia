@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useAuth } from '../auth/auth';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth } from "../auth/auth.js";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    identifier: '', // Can be username or email
-    password: '',
+    identifier: "", // Can be username or email
+    password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
@@ -14,29 +14,29 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/feed');
+      navigate("/feed");
     }
   }, [isAuthenticated, navigate]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.identifier || !formData.password) {
-      toast.error('Please fill in all fields');
+      toast.error("Please fill in all fields");
       return;
     }
 
     setIsLoading(true);
 
     // Determine if identifier is email or username
-    const isEmail = formData.identifier.includes('@');
+    const isEmail = formData.identifier.includes("@");
     const loginData = {
       password: formData.password,
       ...(isEmail
@@ -48,7 +48,7 @@ const Login = () => {
 
     if (result.success) {
       toast.success(result.message);
-      navigate('/feed');
+      navigate("/feed");
     } else {
       toast.error(result.message);
     }
@@ -57,93 +57,93 @@ const Login = () => {
   };
 
   return (
-    <div className='auth-page'>
-      <div className='auth-container'>
-        <div className='auth-card'>
-          <div className='auth-header'>
-            <h1 className='auth-title'>Welcome Back</h1>
-            <p className='auth-description'>
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-card">
+          <div className="auth-header">
+            <h1 className="auth-title">Welcome Back</h1>
+            <p className="auth-description">
               Sign in to your account to continue
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className='auth-form'>
-            <div className='form-group'>
-              <label htmlFor='identifier' className='form-label'>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="identifier" className="form-label">
                 Username or Email
               </label>
               <input
-                type='text'
-                id='identifier'
-                name='identifier'
+                type="text"
+                id="identifier"
+                name="identifier"
                 value={formData.identifier}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='Enter your username or email'
+                className="form-input"
+                placeholder="Enter your username or email"
                 required
               />
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='password' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
-                type='password'
-                id='password'
-                name='password'
+                type="password"
+                id="password"
+                name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='Enter your password'
+                className="form-input"
+                placeholder="Enter your password"
                 required
               />
             </div>
 
             <button
-              type='submit'
-              className='btn btn-primary auth-submit-btn'
+              type="submit"
+              className="btn btn-primary auth-submit-btn"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <div className='spinner'></div>
+                  <div className="spinner"></div>
                   Signing In...
                 </>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </button>
           </form>
 
-          <div className='auth-footer'>
-            <p className='auth-switch'>
-              Don't have an account?{' '}
-              <Link to='/register' className='auth-link'>
+          <div className="auth-footer">
+            <p className="auth-switch">
+              Don't have an account?{" "}
+              <Link to="/register" className="auth-link">
                 Sign up here
               </Link>
             </p>
           </div>
         </div>
 
-        <div className='auth-illustration'>
-          <div className='illustration-content'>
+        <div className="auth-illustration">
+          <div className="illustration-content">
             <h2>Join the Conversation</h2>
             <p>
               Connect with friends, share your thoughts, and discover amazing
               content in our vibrant community.
             </p>
-            <div className='illustration-features'>
-              <div className='feature-highlight'>
-                <span className='feature-icon'>🔐</span>
+            <div className="illustration-features">
+              <div className="feature-highlight">
+                <span className="feature-icon">🔐</span>
                 <span>Secure Login</span>
               </div>
-              <div className='feature-highlight'>
-                <span className='feature-icon'>⚡</span>
+              <div className="feature-highlight">
+                <span className="feature-icon">⚡</span>
                 <span>Instant Access</span>
               </div>
-              <div className='feature-highlight'>
-                <span className='feature-icon'>🌟</span>
+              <div className="feature-highlight">
+                <span className="feature-icon">🌟</span>
                 <span>Amazing Experience</span>
               </div>
             </div>

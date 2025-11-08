@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import api from '../api';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api.js";
 
 const CreatePost = () => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    image: '',
+    title: "",
+    description: "",
+    image: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
+  const [previewImage, setPreviewImage] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -21,20 +23,20 @@ const CreatePost = () => {
     }));
 
     // Handle image preview
-    if (name === 'image') {
+    if (name === "image") {
       setPreviewImage(value);
     }
   };
 
   const handleImageError = () => {
-    setPreviewImage('');
+    setPreviewImage("");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.description.trim()) {
-      toast.error('Please fill in title and description');
+      toast.error("Please fill in title and description");
       return;
     }
 
@@ -47,104 +49,111 @@ const CreatePost = () => {
         ...(formData.image.trim() && { image: formData.image.trim() }),
       };
 
-      const response = await api.post('/api/post', postData);
+      const response = await api.post("/api/post", postData);
 
       if (response.status === 201) {
-        toast.success('Post created successfully!');
-        navigate('/feed');
+        toast.success("Post created successfully!");
+        navigate("/feed");
       } else {
-        toast.error(response.data.message || 'Failed to create post');
+        toast.error(response.data.message || "Failed to create post");
       }
     } catch (error) {
-      console.error('Create post error:', error);
-      toast.error(error.response?.data?.message || 'Failed to create post');
+      console.error("Create post error:", error);
+      if (error instanceof Error) {
+        const axiosError = error as any;
+        toast.error(
+          axiosError.response?.data?.message || "Failed to create post"
+        );
+      } else {
+        toast.error("Failed to create post");
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleCancel = () => {
-    navigate('/feed');
+    navigate("/feed");
   };
 
   return (
-    <div className='create-post-page'>
-      <div className='create-post-container'>
-        <div className='create-post-header'>
-          <h1 className='page-title'>Create New Post</h1>
-          <p className='page-subtitle'>
+    <div className="create-post-page">
+      <div className="create-post-container">
+        <div className="create-post-header">
+          <h1 className="page-title">Create New Post</h1>
+          <p className="page-subtitle">
             Share your thoughts with the community
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className='create-post-form'>
-          <div className='form-section'>
-            <div className='form-group'>
-              <label htmlFor='title' className='form-label'>
+        <form onSubmit={handleSubmit} className="create-post-form">
+          <div className="form-section">
+            <div className="form-group">
+              <label htmlFor="title" className="form-label">
                 Title *
               </label>
               <input
-                type='text'
-                id='title'
-                name='title'
+                type="text"
+                id="title"
+                name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className='form-input'
+                className="form-input"
                 placeholder="What's your post about?"
-                maxLength='100'
+                maxLength={100}
                 required
               />
-              <div className='character-count'>
+              <div className="character-count">
                 {formData.title.length}/100 characters
               </div>
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='description' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="description" className="form-label">
                 Description *
               </label>
               <textarea
-                id='description'
-                name='description'
+                id="description"
+                name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className='form-input form-textarea'
-                placeholder='Share your thoughts, experiences, or ideas...'
-                rows='6'
-                maxLength='1000'
+                className="form-input form-textarea"
+                placeholder="Share your thoughts, experiences, or ideas..."
+                rows={6}
+                maxLength={1000}
                 required
               />
-              <div className='character-count'>
+              <div className="character-count">
                 {formData.description.length}/1000 characters
               </div>
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='image' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="image" className="form-label">
                 Image URL (Optional)
               </label>
               <input
-                type='url'
-                id='image'
-                name='image'
+                type="url"
+                id="image"
+                name="image"
                 value={formData.image}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='https://example.com/image.jpg'
+                className="form-input"
+                placeholder="https://example.com/image.jpg"
               />
-              <div className='input-help'>
+              <div className="input-help">
                 Paste a link to an image to include it in your post
               </div>
             </div>
 
             {previewImage && (
-              <div className='image-preview-section'>
-                <label className='form-label'>Image Preview</label>
-                <div className='image-preview-container'>
+              <div className="image-preview-section">
+                <label className="form-label">Image Preview</label>
+                <div className="image-preview-container">
                   <img
                     src={previewImage}
-                    alt='Preview'
-                    className='image-preview'
+                    alt="Preview"
+                    className="image-preview"
                     onError={handleImageError}
                   />
                 </div>
@@ -152,18 +161,18 @@ const CreatePost = () => {
             )}
           </div>
 
-          <div className='form-actions'>
+          <div className="form-actions">
             <button
-              type='button'
+              type="button"
               onClick={handleCancel}
-              className='btn btn-secondary'
+              className="btn btn-secondary"
               disabled={isSubmitting}
             >
               Cancel
             </button>
             <button
-              type='submit'
-              className='btn btn-primary'
+              type="submit"
+              className="btn btn-primary"
               disabled={
                 isSubmitting ||
                 !formData.title.trim() ||
@@ -172,11 +181,11 @@ const CreatePost = () => {
             >
               {isSubmitting ? (
                 <>
-                  <div className='spinner'></div>
+                  <div className="spinner"></div>
                   Creating Post...
                 </>
               ) : (
-                'Create Post'
+                "Create Post"
               )}
             </button>
           </div>

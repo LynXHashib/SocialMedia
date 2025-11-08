@@ -1,8 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const nodemailer = require('nodemailer');
+import fs from 'fs';
+import path from 'path';
+import nodemailer from 'nodemailer';
+import { PrismaClient } from '@prisma/client';
 const dotenv = require('dotenv').config();
-const logging = (err) => {
+const logging = (err: any) => {
   fs.appendFileSync(
     path.join(__dirname, '..', 'log', 'logs.txt'),
     `${new Date().toISOString()} ${err.stack || err}\n\n`
@@ -16,5 +17,5 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
-module.exports = { logging, transporter };
+const prisma = new PrismaClient()
+export { logging, transporter, prisma };

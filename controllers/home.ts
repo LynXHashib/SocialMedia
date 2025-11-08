@@ -1,6 +1,7 @@
-const { logging } = require('../modules/app');
+import { Request, Response } from 'express';
+import { logging } from '../lib/utils';
 
-const home = async (req, res) => {
+const home = async (req: Request, res: Response) => {
   try {
     return res.json({
       message:
@@ -11,4 +12,4 @@ const home = async (req, res) => {
   }
 };
 
-module.exports = home;
+export default home;

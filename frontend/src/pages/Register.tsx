@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useAuth } from '../auth/auth';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth } from "../auth/auth.js";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    gender: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    gender: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const { register, isAuthenticated } = useAuth();
@@ -17,18 +17,20 @@ const Register = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/feed');
+      navigate("/feed");
     }
   }, [isAuthenticated, navigate]);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Validation
@@ -38,17 +40,17 @@ const Register = () => {
       !formData.password ||
       !formData.gender
     ) {
-      toast.error('Please fill in all fields');
+      toast.error("Please fill in all fields");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return;
     }
 
     if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters long');
+      toast.error("Password must be at least 6 characters long");
       return;
     }
 
@@ -65,7 +67,7 @@ const Register = () => {
 
     if (result.success) {
       toast.success(result.message);
-      navigate('/verification');
+      navigate("/verification");
     } else {
       toast.error(result.message);
     }
@@ -74,143 +76,143 @@ const Register = () => {
   };
 
   return (
-    <div className='auth-page'>
-      <div className='auth-container'>
-        <div className='auth-illustration'>
-          <div className='illustration-content'>
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-illustration">
+          <div className="illustration-content">
             <h2>Start Your Journey</h2>
             <p>
               Join thousands of users sharing their stories, connecting with
               friends, and discovering amazing content every day.
             </p>
-            <div className='illustration-features'>
-              <div className='feature-highlight'>
-                <span className='feature-icon'>🎉</span>
+            <div className="illustration-features">
+              <div className="feature-highlight">
+                <span className="feature-icon">🎉</span>
                 <span>Free to Join</span>
               </div>
-              <div className='feature-highlight'>
-                <span className='feature-icon'>👥</span>
+              <div className="feature-highlight">
+                <span className="feature-icon">👥</span>
                 <span>Growing Community</span>
               </div>
-              <div className='feature-highlight'>
-                <span className='feature-icon'>🔒</span>
+              <div className="feature-highlight">
+                <span className="feature-icon">🔒</span>
                 <span>Privacy Protected</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className='auth-card'>
-          <div className='auth-header'>
-            <h1 className='auth-title'>Create Account</h1>
-            <p className='auth-description'>
+        <div className="auth-card">
+          <div className="auth-header">
+            <h1 className="auth-title">Create Account</h1>
+            <p className="auth-description">
               Join our community and start sharing
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className='auth-form'>
-            <div className='form-group'>
-              <label htmlFor='name' className='form-label'>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
                 Username
               </label>
               <input
-                type='text'
-                id='name'
-                name='name'
+                type="text"
+                id="name"
+                name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='Choose a unique username'
+                className="form-input"
+                placeholder="Choose a unique username"
                 required
               />
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='email' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
                 Email Address
               </label>
               <input
-                type='email'
-                id='email'
-                name='email'
+                type="email"
+                id="email"
+                name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='Enter your email address'
+                className="form-input"
+                placeholder="Enter your email address"
                 required
               />
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='gender' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="gender" className="form-label">
                 Gender
               </label>
               <select
-                id='gender'
-                name='gender'
+                id="gender"
+                name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className='form-select'
+                className="form-select"
                 required
               >
-                <option value=''>Select your gender</option>
-                <option value='Male'>Male</option>
-                <option value='Female'>Female</option>
+                <option value="">Select your gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='password' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
-                type='password'
-                id='password'
-                name='password'
+                type="password"
+                id="password"
+                name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='Create a strong password'
+                className="form-input"
+                placeholder="Create a strong password"
                 required
               />
             </div>
 
-            <div className='form-group'>
-              <label htmlFor='confirmPassword' className='form-label'>
+            <div className="form-group">
+              <label htmlFor="confirmPassword" className="form-label">
                 Confirm Password
               </label>
               <input
-                type='password'
-                id='confirmPassword'
-                name='confirmPassword'
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className='form-input'
-                placeholder='Confirm your password'
+                className="form-input"
+                placeholder="Confirm your password"
                 required
               />
             </div>
 
             <button
-              type='submit'
-              className='btn btn-primary auth-submit-btn'
+              type="submit"
+              className="btn btn-primary auth-submit-btn"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <div className='spinner'></div>
+                  <div className="spinner"></div>
                   Creating Account...
                 </>
               ) : (
-                'Create Account'
+                "Create Account"
               )}
             </button>
           </form>
 
-          <div className='auth-footer'>
-            <p className='auth-switch'>
-              Already have an account?{' '}
-              <Link to='/login' className='auth-link'>
+          <div className="auth-footer">
+            <p className="auth-switch">
+              Already have an account?{" "}
+              <Link to="/login" className="auth-link">
                 Sign in here
               </Link>
             </p>

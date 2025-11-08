@@ -1,16 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import api from '../api';
-import LoadingSpinner from '../components/LoadingSpinner';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api.js";
+import LoadingSpinner from "../components/LoadingSpinner.js";
+
+interface Comment {
+  name: string;
+  comment: string;
+}
+
+interface Post {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  image?: string;
+  likes: number;
+  dislikes: number;
+  comments: Comment[];
+  likedby: string[];
+  dislikedby: string[];
+  user: string;
+  postComments: Comment[];
+}
 
 const PostDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [post, setPost] = useState<Post | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [isDisliking, setIsDisliking] = useState(false);
@@ -37,25 +58,30 @@ const PostDetail = () => {
         if (Array.isArray(commentsData)) {
           setComments(commentsData);
         } else {
-          console.warn('Comments data is not an array:', commentsData);
+          console.warn("Comments data is not an array:", commentsData);
           setComments([]);
         }
       } else {
-        throw new Error('Invalid response from server');
+        throw new Error("Invalid response from server");
       }
     } catch (error) {
-      console.error('Failed to fetch post:', error);
+      console.error("Failed to fetch post:", error);
 
-      // More specific error handling
-      if (error.response?.status === 404) {
-        toast.error('Post not found');
-      } else if (error.response?.status >= 500) {
-        toast.error('Server error. Please try again later.');
+      if (error instanceof Error) {
+        const axiosError = error as any;
+        // More specific error handling
+        if (axiosError.response?.status === 404) {
+          toast.error("Post not found");
+        } else if (axiosError.response?.status >= 500) {
+          toast.error("Server error. Please try again later.");
+        } else {
+          toast.error("Failed to load post");
+        }
       } else {
-        toast.error('Failed to load post');
+        toast.error("Failed to load post");
       }
 
-      navigate('/feed');
+      navigate("/feed");
     } finally {
       setLoading(false);
     }
@@ -68,15 +94,20 @@ const PostDetail = () => {
     try {
       const response = await api.post(`/api/likepost/${id}`);
       if (response.status === 201) {
-        toast.success('Post liked!');
+        toast.success("Post liked!");
         await fetchPost(); // Refresh post data
       }
     } catch (error) {
-      console.error('Like error:', error);
-      if (error.response?.status === 409) {
-        toast.info('You have already liked this post');
+      console.error("Like error:", error);
+      if (error instanceof Error) {
+        const axiosError = error as any;
+        if (axiosError.response?.status === 409) {
+          toast.info("You have already liked this post");
+        } else {
+          toast.error("Failed to like post");
+        }
       } else {
-        toast.error('Failed to like post');
+        toast.error("Failed to like post");
       }
     } finally {
       setIsLiking(false);
@@ -90,33 +121,38 @@ const PostDetail = () => {
     try {
       const response = await api.post(`/api/dislikepost/${id}`);
       if (response.status === 201) {
-        toast.success('Post disliked!');
+        toast.success("Post disliked!");
         await fetchPost(); // Refresh post data
       }
     } catch (error) {
-      console.error('Dislike error:', error);
-      if (error.response?.status === 409) {
-        toast.info('You have already disliked this post');
+      console.error("Dislike error:", error);
+      if (error instanceof Error) {
+        const axiosError = error as any;
+        if (axiosError.response?.status === 409) {
+          toast.info("You have already disliked this post");
+        } else {
+          toast.error("Failed to dislike post");
+        }
       } else {
-        toast.error('Failed to dislike post');
+        toast.error("Failed to dislike post");
       }
     } finally {
       setIsDisliking(false);
     }
   };
-  const hasLiked = post.likedby.indexOf(post.user) === -1;
-  const hasDisLiked = post.dislikedby.indexOf(post.user) === -1;
-  const handleCommentSubmit = async (e) => {
+  const hasLiked = post?.likedby?.indexOf(post?.user) === -1;
+  const hasDisLiked = post?.dislikedby?.indexOf(post?.user) === -1;
+  const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const trimmedComment = commentText.trim();
     if (!trimmedComment) {
-      toast.error('Please enter a comment');
+      toast.error("Please enter a comment");
       return;
     }
 
     if (trimmedComment.length > 500) {
-      toast.error('Comment is too long (max 500 characters)');
+      toast.error("Comment is too long (max 500 characters)");
       return;
     }
 
@@ -127,68 +163,73 @@ const PostDetail = () => {
       });
 
       if (response.status === 201) {
-        toast.success('Comment added successfully!');
-        setCommentText('');
+        toast.success("Comment added successfully!");
+        setCommentText("");
         await fetchPost(); // Refresh to get new comments
       }
     } catch (error) {
-      console.error('Comment submission error:', error);
+      console.error("Comment submission error:", error);
 
-      if (error.response?.status === 400) {
-        toast.error('Invalid comment data');
-      } else if (error.response?.status === 401) {
-        toast.error('Please log in to comment');
+      if (error instanceof Error) {
+        const axiosError = error as any;
+        if (axiosError.response?.status === 400) {
+          toast.error("Invalid comment data");
+        } else if (axiosError.response?.status === 401) {
+          toast.error("Please log in to comment");
+        } else {
+          toast.error("Failed to add comment");
+        }
       } else {
-        toast.error('Failed to add comment');
+        toast.error("Failed to add comment");
       }
     } finally {
       setSubmittingComment(false);
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
-        return 'Invalid date';
+        return "Invalid date";
       }
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     } catch (error) {
-      console.error('Date formatting error:', error);
-      return 'Unknown date';
+      console.error("Date formatting error:", error);
+      return "Unknown date";
     }
   };
 
-  const getAuthorInitial = (author) => {
-    if (!author || typeof author !== 'string') return 'U';
+  const getAuthorInitial = (author: string | undefined) => {
+    if (!author || typeof author !== "string") return "U";
     return author.charAt(0).toUpperCase();
   };
 
-  const safeGetNumber = (value) => {
-    if (typeof value === 'number') return value;
+  const safeGetNumber = (value: unknown) => {
+    if (typeof value === "number") return value;
     if (Array.isArray(value)) return value.length;
     return 0;
   };
 
   if (loading) {
-    return <LoadingSpinner text='Loading post...' />;
+    return <LoadingSpinner text="Loading post..." />;
   }
 
   if (!post) {
     return (
-      <div className='error-container'>
+      <div className="error-container">
         <h2>Post not found</h2>
         <p>The post you're looking for doesn't exist or has been removed.</p>
         <Link
-          to='/feed'
-          style='text-decoration:none;'
-          className='btn btn-primary'
+          to="/feed"
+          style={{ textDecoration: "none" }}
+          className="btn btn-primary"
         >
           Back to Feed
         </Link>
@@ -197,159 +238,160 @@ const PostDetail = () => {
   }
 
   return (
-    <div className='post-detail-page'>
-      <div className='post-detail-container'>
-        <div className='post-header'>
-          <Link to='/feed' className='back-link'>
+    <div className="post-detail-page">
+      <div className="post-detail-container">
+        <div className="post-header">
+          <Link to="/feed" className="back-link">
             ← Back to Feed
           </Link>
         </div>
 
-        <article className='post-content'>
-          <div className='post-meta'>
-            <div className='author-info'>
-              <div className='author-avatar'>
+        <article className="post-content">
+          <div className="post-meta">
+            <div className="author-info">
+              <div className="author-avatar">
                 {getAuthorInitial(post.author)}
               </div>
-              <div className='author-details'>
-                <h3 className='author-name'>
-                  {post.author || 'Unknown Author'}
+              <div className="author-details">
+                <h3 className="author-name">
+                  {post.author || "Unknown Author"}
                 </h3>
-                <p className='post-date'>{formatDate(post.date)}</p>
+                <p className="post-date">{formatDate(post.date)}</p>
               </div>
             </div>
           </div>
 
-          <div className='post-body'>
-            <h1 className='post-title'>{post.title || 'Untitled Post'}</h1>
-            <p className='post-description'>
-              {post.description || 'No description available.'}
+          <div className="post-body">
+            <h1 className="post-title">{post.title || "Untitled Post"}</h1>
+            <p className="post-description">
+              {post.description || "No description available."}
             </p>
 
             {post.image && (
-              <div className='post-image-container'>
+              <div className="post-image-container">
                 <img
                   src={post.image}
-                  alt={post.title || 'Post image'}
-                  className='post-image'
-                  onError={(e) => {
-                    e.target.style.display = 'none';
+                  alt={post.title || "Post image"}
+                  className="post-image"
+                  onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.display = "none";
                   }}
                 />
               </div>
             )}
           </div>
 
-          <div className='post-engagement'>
-            <div className='engagement-stats'>
-              <span className='stat-item'>
-                <span className='stat-icon'>👍</span>
-                <span className='stat-count'>
+          <div className="post-engagement">
+            <div className="engagement-stats">
+              <span className="stat-item">
+                <span className="stat-icon">👍</span>
+                <span className="stat-count">
                   {safeGetNumber(
                     post.likes || (post.likedby && post.likedby.length)
-                  )}{' '}
+                  )}{" "}
                   likes
                 </span>
               </span>
-              <span className='stat-item'>
-                <span className='stat-icon'>👎</span>
-                <span className='stat-count'>
+              <span className="stat-item">
+                <span className="stat-icon">👎</span>
+                <span className="stat-count">
                   {safeGetNumber(
                     post.dislikes || (post.dislikedby && post.dislikedby.length)
-                  )}{' '}
+                  )}{" "}
                   dislikes
                 </span>
               </span>
-              <span className='stat-item'>
-                <span className='stat-icon'>💬</span>
-                <span className='stat-count'>{comments.length} comments</span>
+              <span className="stat-item">
+                <span className="stat-icon">💬</span>
+                <span className="stat-count">{comments.length} comments</span>
               </span>
             </div>
 
-            <div className='engagement-actions'>
+            <div className="engagement-actions">
               <button
                 onClick={handleLike}
                 disabled={isLiking}
                 className={`engagement-btn like-btn${
-                  hasLiked ? ' liked-glow' : ''
+                  hasLiked ? " liked-glow" : ""
                 }`}
-                aria-label='Like this post'
+                aria-label="Like this post"
               >
-                {isLiking ? <div className='spinner small'></div> : '👍'} Like
+                {isLiking ? <div className="spinner small"></div> : "👍"} Like
               </button>
               <button
                 onClick={handleDislike}
                 disabled={isDisliking}
                 className={`engagement-btn dislike-btn${
-                  hasDisLiked ? ' liked-glow' : ''
+                  hasDisLiked ? " liked-glow" : ""
                 }`}
-                aria-label='Dislike this post'
+                aria-label="Dislike this post"
               >
-                {isDisliking ? <div className='spinner small'></div> : '👎'}{' '}
+                {isDisliking ? <div className="spinner small"></div> : "👎"}{" "}
                 Dislike
               </button>
             </div>
           </div>
         </article>
 
-        <section className='comments-section'>
-          <h2 className='comments-title'>Comments ({comments.length})</h2>
+        <section className="comments-section">
+          <h2 className="comments-title">Comments ({comments.length})</h2>
 
-          <form onSubmit={handleCommentSubmit} className='comment-form'>
-            <div className='comment-input-container'>
+          <form onSubmit={handleCommentSubmit} className="comment-form">
+            <div className="comment-input-container">
               <textarea
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder='Share your thoughts on this post...'
-                className='comment-input'
-                rows='3'
-                maxLength='500'
+                placeholder="Share your thoughts on this post..."
+                className="comment-input"
+                rows={3}
+                maxLength={500}
                 disabled={submittingComment}
-                aria-label='Write a comment'
+                aria-label="Write a comment"
               />
-              <div className='comment-form-footer'>
+              <div className="comment-form-footer">
                 <span
                   className={`character-count ${
-                    commentText.length > 450 ? 'warning' : ''
+                    commentText.length > 450 ? "warning" : ""
                   }`}
                 >
                   {commentText.length}/500
                 </span>
                 <button
-                  type='submit'
+                  type="submit"
                   disabled={submittingComment || !commentText.trim()}
-                  className='btn btn-primary'
+                  className="btn btn-primary"
                 >
                   {submittingComment ? (
                     <>
-                      <div className='spinner'></div>
+                      <div className="spinner"></div>
                       Posting...
                     </>
                   ) : (
-                    'Post Comment'
+                    "Post Comment"
                   )}
                 </button>
               </div>
             </div>
           </form>
 
-          <div className='comments-list'>
+          <div className="comments-list">
             {comments.length === 0 ? (
-              <div className='no-comments'>
+              <div className="no-comments">
                 <p>No comments yet. Be the first to share your thoughts!</p>
               </div>
             ) : (
               comments.map((comment, index) => (
-                <div key={`comment-${index}`} className='comment-item'>
-                  <div className='comment-avatar'>
+                <div key={`comment-${index}`} className="comment-item">
+                  <div className="comment-avatar">
                     {getAuthorInitial(comment.name)}
                   </div>
-                  <div className='comment-content'>
-                    <div className='comment-author'>
-                      {comment.name || 'Anonymous'}
+                  <div className="comment-content">
+                    <div className="comment-author">
+                      {comment.name || "Anonymous"}
                     </div>
-                    <div className='comment-text'>
-                      {comment.comment || 'No comment text'}
+                    <div className="comment-text">
+                      {comment.comment || "No comment text"}
                     </div>
                   </div>
                 </div>
