@@ -1,6 +1,7 @@
 import { logging, transporter, prisma } from '../lib/utils';
 import crypto from 'crypto';
 import { Request, Response } from 'express'
+import { auth } from '../lib/auth';
 //   CONSTANTS
 const sendMail = async (email: any, uniqueToken: String) => {
   await transporter.sendMail({
@@ -99,14 +100,17 @@ const register = async (req: Request, res: Response) => {
       .digest('hex');
 
     await sendMail(email, uniqueToken);
-    const newUser = await users.create({
-      name: name,
-      email: email,
-      password: password,
-      gender: gender,
-      verifytoken: uniqueToken,
+    const newUser = await prisma.user.create({
+      data:
+      {
+        name: name,
+        email: email,
+        password: password,
+        gender: gender,
+        verifytoken: uniqueToken,
+      }
     });
-    req.session.user = newUser;
+    await auth.api.signInEmail({ body: newUser })
     return res.status(201).json({
       message: `User:${name} created successfully. You can't access feed until you verify your email`,
       name: name,
